@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>rpc admin</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <script src="/jquery/jquery-2.1.3.min.js"></script>
+   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+   <script src="/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<#assign page='hosts'/>
+		<#include 'navbar.ftl'/>
+
+			<div class="panel panel-primary">
+		    	<div class="panel-heading">
+					host list
+		    	</div>
+		    	<div class="form-inline">
+					<div class="btn-group">
+						<button type="button" class="btn btn-primary">namespace</button>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							${namespace}<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<#list namespaces as np>
+								<#if np!=namespace>
+								<li><a href="/webui/hosts?namespace=${np}">${np}</a></li>
+								</#if>
+							</#list>
+						</ul>
+					</div>
+				</div>
+		    	<table class="table">
+					<thead>
+						<tr>
+							<td>host</td>
+							<td>port</td>
+						</tr>
+					</thead>
+					<tbody>
+					<#list hosts as host>
+						<tr>
+							<td>${host.host}</td>
+							<td>${host.port}</td>
+						</tr>
+					</#list>
+					</tbody>
+				</table>
+		    </div>
+	</div>
+</body>
+</html>
