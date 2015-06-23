@@ -42,8 +42,8 @@
 			    	<table class="table">
 						<thead>
 							<tr>
-								<td>host</td>
-								<td>port</td>
+								<th>host</th>
+								<th>port</th>
 							</tr>
 						</thead>
 						<tbody>

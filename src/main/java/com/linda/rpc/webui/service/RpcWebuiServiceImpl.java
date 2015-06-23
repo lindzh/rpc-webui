@@ -1,6 +1,7 @@
 package com.linda.rpc.webui.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class RpcWebuiServiceImpl implements RpcWebuiService,RpcInfoListener{
 		try{
 			lock.lock();
 			String md5 = MD5Utils.md5(config.toString());
+			config.setMd5(md5);
 			md5ConfigCache.put(md5, config);
 			configProvidersCache.put(md5, hosts);
 		}finally{
@@ -177,6 +179,22 @@ public class RpcWebuiServiceImpl implements RpcWebuiService,RpcInfoListener{
 	@Override
 	public RpcConfig getNamespaceConfig(String namespace) {
 		return md5ConfigCache.get(namespace);
+	}
+
+	@Override
+	public List<RpcConfig> getRpcConfigs() {
+		List<RpcConfig> list = new ArrayList<RpcConfig>();
+		Lock lock = readwriteLock.readLock();
+		try{
+			lock.lock();
+			Collection<RpcConfig> configs = md5ConfigCache.values();
+			if(configs!=null){
+				list.addAll(configs);
+			}
+		}finally{
+			lock.unlock();
+		}
+		return list;
 	}
 	
 }

@@ -128,6 +128,8 @@ public class WebuiServlet extends HttpServlet{
 			}else if(uri.startsWith("/webui/host/services")){
 				String hostAndPort = req.getParameter("hostAndPort");
 				page = webuiController.getHostServices(namespace, hostAndPort, model);
+			}else if(uri.startsWith("/webui/configs")){
+				page = webuiController.getRpcConfigs(model);
 			}
 			String result = freemarkerService.merge(page, model);
 			ServletUtils.write(result, resp);

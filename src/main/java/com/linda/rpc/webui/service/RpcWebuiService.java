@@ -15,6 +15,8 @@ public interface RpcWebuiService {
 	
 	public List<String> getNamespaces();
 	
+	public List<RpcConfig> getRpcConfigs();
+	
 	public List<RpcHostAndPort> getHostsByNamespace(String namespace);
 	
 	public List<RpcHostAndPort> getRpcHostsByRpc(String namespace,String serviceName,String serviceVersion);

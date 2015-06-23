@@ -69,4 +69,10 @@ public class RpcWebuiController {
 		model.put("namespace", namespace);
 		return "hosts";
 	}
+	
+	public String getRpcConfigs(Map<String,Object> model){
+		List<RpcConfig> configs = rpcWebuiService.getRpcConfigs();
+		model.put("configs", configs);
+		return "configs";
+	}
 }

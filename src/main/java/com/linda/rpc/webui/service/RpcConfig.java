@@ -28,6 +28,16 @@ public class RpcConfig {
 	
 	private String zkConnectionString;
 	
+	private String md5;
+	
+	public String getMd5() {
+		return md5;
+	}
+
+	public void setMd5(String md5) {
+		this.md5 = md5;
+	}
+
 	public String getNamespace() {
 		return namespace;
 	}
@@ -107,6 +117,22 @@ public class RpcConfig {
 
 	public void setZkConnectionString(String zkConnectionString) {
 		this.zkConnectionString = zkConnectionString;
+	}
+	
+	public String getInfo(){
+		if(protocol.equalsIgnoreCase("etcd")){
+			return this.etcdUrl;
+		}else if(protocol.equalsIgnoreCase("simple")){
+			return this.providerHost+":"+this.providerPort;
+		}else if(protocol.equalsIgnoreCase("zookeeper")){
+			return this.zkConnectionString;
+		}else{
+			if(this.redisHost!=null&&this.redisPort>0){
+				return this.redisHost+":"+this.redisPort;
+			}else{
+				return "sentinel master:"+this.sentinelMaster;
+			}
+		}
 	}
 	
 	@Override

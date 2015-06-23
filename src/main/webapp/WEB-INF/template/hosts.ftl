@@ -33,9 +33,9 @@
 		    	<table class="table">
 					<thead>
 						<tr>
-							<td>host</td>
-							<td>port</td>
-							<td>services</td>
+							<th>host</th>
+							<th>port</th>
+							<th>services</th>
 						</tr>
 					</thead>
 					<tbody>

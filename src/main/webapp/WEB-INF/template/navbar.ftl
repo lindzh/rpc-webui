@@ -8,7 +8,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="/webui/index">RPC</a>
+		      <a class="navbar-brand" href="/webui/services">RPC</a>
 		    </div>
 
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -18,6 +18,9 @@
 		        </li>
 		        <li <#if page=='hosts'>class="active"</#if>>
 		        	<a href="/webui/hosts">hosts</a>
+		        </li>
+		       	<li <#if page=='configs'>class="active"</#if>>
+		        	<a href="/webui/configs">configs</a>
 		        </li>
 		      </ul>
 		    </div>
