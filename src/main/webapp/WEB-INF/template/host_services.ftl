@@ -49,7 +49,7 @@
 					</thead>
 					<tbody>
 						<#if (services??)>
-						<#list services as services>
+						<#list services as service>
 						<tr>
 							<td>${service.name}</td>
 							<td>${service.version}</td>

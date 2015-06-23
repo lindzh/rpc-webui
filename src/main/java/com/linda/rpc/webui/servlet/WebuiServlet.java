@@ -45,7 +45,7 @@ public class WebuiServlet extends HttpServlet{
 	
 	private Logger logger = Logger.getLogger(WebuiServlet.class);
 	
-	private String rpcConfig = "webrpc.json";
+	private String rpcConfig = "webui.json";
 	
 	/**
 	 * 通过classpath获取servlet配置rpcConfig文件，初始化

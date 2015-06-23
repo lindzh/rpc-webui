@@ -14,7 +14,7 @@
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
 		        <li <#if page=='index'>class="active"</#if>>
-		        	<a href="/webui/index">index<span class="sr-only">(current)</span></a>
+		        	<a href="/webui/services">index<span class="sr-only">(current)</span></a>
 		        </li>
 		        <li <#if page=='hosts'>class="active"</#if>>
 		        	<a href="/webui/hosts">hosts</a>

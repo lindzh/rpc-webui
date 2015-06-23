@@ -12,10 +12,9 @@
 		<#assign page='hosts'/>
 		<#include 'navbar.ftl'/>
 
-			<div class="panel panel-primary">
-		    	<div class="panel-heading">
-					host list
-		    	</div>
+		<div class="panel panel-primary">
+		    <div class="panel-body">
+
 		    	<div class="form-inline">
 					<div class="btn-group">
 						<button type="button" class="btn btn-primary">namespace</button>
@@ -36,6 +35,7 @@
 						<tr>
 							<td>host</td>
 							<td>port</td>
+							<td>services</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -43,11 +43,13 @@
 						<tr>
 							<td>${host.host}</td>
 							<td>${host.port}</td>
+							<td><a href="/webui/host/services?namespace=${namespace}&hostAndPort=${host.host}:${host.port}">services</a></td>
 						</tr>
 					</#list>
 					</tbody>
 				</table>
-		    </div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

@@ -37,7 +37,7 @@ public class RpcWebuiController {
 		model.put("services", services);
 		model.put("keyword", keyword);
 		model.put("namespace", namespace);
-		return "index";
+		return "services";
 	}
 	
 	public String getHostsByService(String namespace,String serviceName,String serviceVersion,Map<String,Object> model){
@@ -56,6 +56,9 @@ public class RpcWebuiController {
 		model.put("namespace", namespace);
 		model.put("services", services);
 		model.put("hostAndPort", hostAndPort);
+		String[] hostPort = hostAndPort.split(":");
+		model.put("host", hostPort[0]);
+		model.put("port", hostPort[1]);
 		return "host_services";
 	}
 	

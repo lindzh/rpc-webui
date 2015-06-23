@@ -13,8 +13,8 @@
 		<#include 'navbar.ftl'/>
 		<div class="panel panel-primary">
 		  	<div class="panel-body">
-               
-	            <div class="form-inline">
+				<form id="selectByKeyWords" action="/webui/services" method="GET" class="form-inline">
+				 	<!--放在同一行-->
 					<div class="btn-group">
 						<button type="button" class="btn btn-primary">namespace</button>
 						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -23,22 +23,21 @@
 						<ul class="dropdown-menu" role="menu">
 							<#list namespaces as np>
 								<#if np!=namespace>
-								<li><a href="/webui/index?keyword=<#if keyword??>${keyword}</#if>&namespace=${np}">${np}</a></li>
+								<li><a href="/webui/services?keyword=<#if keyword??>${keyword}</#if>&namespace=${np}">${np}</a></li>
 								</#if>
 							</#list>
 						</ul>
 					</div>
-					 <form id="selectByKeyWords" action="/webui/index" method="GET">
-						<div class="input-group">
-							<input id="keywords" name="keywords" type="text" class="form-control searchIpt" aria-describedby="basic-addon1"
-								   placeholder="service name"  <#if keyword??>value="${keyword}"</#if>>
-						</div>
-						<div class="btn-group">
-							<button type="submit"  class="btn btn-primary" >search</button>
-						</div>
-					 </form>
-				</div>
-               
+
+					<div class="input-group">
+						<input id="keywords" name="keyword" type="text" class="form-control searchIpt" aria-describedby="basic-addon1"
+							   placeholder="please input keyword"  <#if keyword??>value="${keyword}"</#if>>
+					</div>
+					<input type="hidden" name="namespace" value="${namespace}">
+					<div class="btn-group">
+						<button type="submit"  class="btn btn-primary" >search</button>
+					</div>
+				 </form>
 				<br/>
 				<table class="table table-hover">
 					<thead>
@@ -46,15 +45,17 @@
 							<th>service</th>
 							<th>version</th>
 							<th>impl</th>
+							<th>hosts</th>
 						</tr>
 					</thead>
 					<tbody>
 						<#if (services??)>
-						<#list services as services>
+						<#list services as service>
 						<tr>
 							<td>${service.name}</td>
 							<td>${service.version}</td>
 							<td>${service.impl}</td>
+							<td><a href="/webui/service/hosts?namespace=${namespace}&serviceName=${service.name}&serviceVersion=${service.version}">hosts</a></td>
 						</tr>
 						</#list>
 						</#if>

@@ -116,12 +116,14 @@ public class RpcConfig {
 				+ redisPort + ", sentinelMaster=" + sentinelMaster);
 		sb.append(", sentinels=[");
 		boolean has = false;
-		for(String sentinel:sentinels){
-			if(has){
-				sb.append(",");
+		if(sentinels!=null){
+			for(String sentinel:sentinels){
+				if(has){
+					sb.append(",");
+				}
+				sb.append(sentinel);
+				has = true;
 			}
-			sb.append(sentinel);
-			has = true;
 		}
 		sb.append("], providerHost=" + providerHost + ", providerPort="
 				+ providerPort + ", zkConnectionString=" + zkConnectionString + "]");

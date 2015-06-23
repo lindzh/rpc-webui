@@ -34,7 +34,7 @@ public class FreemarkerService implements Service {
 	
 	public String merge(String template, Map<String, Object> model) {
 		try {
-			Template tpl = cfg.getTemplate(template+suffix);
+			Template tpl = cfg.getTemplate(template+"."+suffix);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			OutputStreamWriter writer = new OutputStreamWriter(bos);
 			tpl.process(model, writer);
@@ -57,6 +57,7 @@ public class FreemarkerService implements Service {
 		try {
 			cfg.setDirectoryForTemplateLoading(new File(location));
 			cfg.setObjectWrapper(new DefaultObjectWrapper());
+			cfg.setNumberFormat("#");
 		} catch (IOException e) {
 			logger.error("setDirectoryForTemplateLoading IOException location: "+location,e);
 			throw new RuntimeException(e);

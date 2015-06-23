@@ -19,16 +19,20 @@
 	
 	<servlet>
 		<servlet-name>WebuiServlet</servlet-name>
-		<description></description>
+		<description>rpc webui</description>
 		<servlet-class>com.linda.rpc.webui.servlet.WebuiServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>utf-8</param-value>
+			<param-name>rpcConfig</param-name>
+			<param-value>webui.json</param-value>
 		</init-param>
-				<init-param>
-			<param-name>encoding</param-name>
-			<param-value>utf-8</param-value>
+		<init-param>
+			<param-name>templateLocation</param-name>
+			<param-value>/WEB-INF/template</param-value>
+		</init-param>
+		<init-param>
+			<param-name>templateSuffix</param-name>
+			<param-value>ftl</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
