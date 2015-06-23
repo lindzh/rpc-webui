@@ -15,7 +15,8 @@
 ![host services](http://img2.ph.126.net/QhAM9bCl_BUU3ruVkVle-w==/6619279901538292739.png)
 
 ##How to config and start?
->webui.json
+```
+webui.json
 [
     {
         "namespace": "default",
@@ -40,3 +41,7 @@ sentinels:when protocol is redis use and use redis sentinel for fail over
 providerHost:when protocol is simple single node provider use
 providerPort:when protocol is simple single node provider use
 zkConnectionString:when protocol is zookeeper use
+```
+###How to start service
+execute :  maven clean install war:inplace -Dmaven.test.skip
+then config tomcat to webapp,start tomcat
