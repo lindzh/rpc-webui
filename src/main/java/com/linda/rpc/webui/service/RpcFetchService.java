@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 
@@ -34,6 +36,8 @@ public class RpcFetchService implements Service{
 	private Timer timer = new Timer();
 	
 	private long fetchInterval = 10000;//10s
+	
+	private ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(5);
 	
 	public void setRpcConfigs(List<RpcConfig> configs){
 		this.rpcConfiguration = configs;
@@ -77,18 +81,24 @@ public class RpcFetchService implements Service{
 	
 	private void fetServerAndServices(){
 		Set<RpcConfig> configs = configAdminCache.keySet();
-		for(RpcConfig config:configs){
-			RpcAdminService adminService = configAdminCache.get(config);
-			if(adminService==null){
-				this.initConfig(config);
-			}else{
-				List<RpcHostAndPort> servers = adminService.getRpcServers();
-				this.fireServerListeners(config, servers);
-				for(RpcHostAndPort server:servers){
-					List<RpcService> services = adminService.getRpcServices(server);
-					this.fireServicesListeners(config, server, services);
+		for(final RpcConfig config:configs){
+			threadPoolExecutor.submit(new Runnable(){
+				@Override
+				public void run() {
+					RpcAdminService adminService = configAdminCache.get(config);
+					if(adminService==null){
+						RpcFetchService.this.initConfig(config);
+					}else{
+						List<RpcHostAndPort> servers = adminService.getRpcServers();
+						RpcFetchService.this.fireServerListeners(config, servers);
+						for(RpcHostAndPort server:servers){
+							List<RpcService> services = adminService.getRpcServices(server);
+							RpcFetchService.this.fireServicesListeners(config, server, services);
+						}
+					}
 				}
-			}
+			});
+
 		}
 	}
 	
