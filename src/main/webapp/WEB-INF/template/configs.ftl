@@ -21,6 +21,7 @@
 							<th>namespace</th>
 							<th>protocol</th>
 							<th>info</th>
+							<th>operations</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -30,6 +31,11 @@
 							<td>${config.namespace}</td>
 							<td>${config.protocol}</td>
 							<td>${config.info}</td>
+							<td>
+							<a href="/webui/services?namespace=${config.md5}">services</a>
+							&nbsp;
+							<a href="/webui/hosts?namespace=${config.md5}">hosts</a>
+							</td>
 					</#list>
 					</tbody>
 				</table>
