@@ -21,8 +21,9 @@ public class RpcWebuiController {
 	}
 
 	private String chooseNamespaces(String namespace,Map<String,Object> model){
+		List<RpcConfig> configs = rpcWebuiService.getRpcConfigs();
 		List<String> namespaces = rpcWebuiService.getNamespaces();
-		model.put("namespaces", namespaces);
+		model.put("configs", configs);
 		if((namespace==null||!namespaces.contains(namespace))&&namespaces.size()>0){
 			namespace = namespaces.get(0);
 		}

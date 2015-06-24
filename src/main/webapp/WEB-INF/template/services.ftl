@@ -18,12 +18,12 @@
 					<div class="btn-group">
 						<button type="button" class="btn btn-primary">namespace</button>
 						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							${namespace}<span class="caret"></span>
+							${namespaceConfig.protocol}-${namespaceConfig.namespace}&nbsp;&nbsp;&nbsp;${namespaceConfig.md5}<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" role="menu">
-							<#list namespaces as np>
-								<#if np!=namespace>
-								<li><a href="/webui/services?keyword=<#if keyword??>${keyword}</#if>&namespace=${np}">${np}</a></li>
+							<#list configs as config>
+								<#if config.md5!=namespace>
+								<li><a href="/webui/services?keyword=<#if keyword??>${keyword}</#if>&namespace=${config.md5}">${config.protocol}-${config.namespace}&nbsp;&nbsp;&nbsp;${config.md5}</a></li>
 								</#if>
 							</#list>
 						</ul>
