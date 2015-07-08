@@ -44,6 +44,7 @@
 							<tr>
 								<th>host</th>
 								<th>port</th>
+								<th>time</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -51,6 +52,7 @@
 							<tr>
 								<td>${host.host}</td>
 								<td>${host.port}</td>
+								<td>${parseDate(host.time)}</td>
 							</tr>
 						</#list>
 						</tbody>

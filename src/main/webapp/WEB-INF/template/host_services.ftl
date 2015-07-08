@@ -45,6 +45,7 @@
 							<th>service</th>
 							<th>version</th>
 							<th>impl</th>
+							<th>time</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -54,6 +55,7 @@
 							<td>${service.name}</td>
 							<td>${service.version}</td>
 							<td>${service.impl}</td>
+							<td>${parseDate(service.time)}</td>
 						</tr>
 						</#list>
 						</#if>

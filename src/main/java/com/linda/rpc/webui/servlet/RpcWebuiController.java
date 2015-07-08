@@ -29,6 +29,7 @@ public class RpcWebuiController {
 		}
 		RpcConfig namespaceConfig = rpcWebuiService.getNamespaceConfig(namespace);
 		model.put("namespaceConfig", namespaceConfig);
+		model.put("parseDate", new FtlDateParser());
 		return namespace;
 	}
 	

@@ -135,6 +135,7 @@ public class WebuiServlet extends HttpServlet{
 			ServletUtils.write(result, resp);
 			return;
 		}catch(Exception e){
+			e.printStackTrace();
 			page = "500";
 		}
 		int code = Integer.parseInt(page);

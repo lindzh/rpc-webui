@@ -12,18 +12,6 @@
         "zkConnectionString": null
     },
         {
-        "namespace": "myrpc",
-        "protocol": "zookeeper",
-        "etcdUrl": null,
-        "redisHost": null,
-        "redisPort": 0,
-        "sentinelMaster": null,
-        "sentinels": null,
-        "providerHost": null,
-        "providerPort": 0,
-        "zkConnectionString": "192.168.139.129:2215,192.168.139.129:2225,192.168.139.129:2235"
-    },
-        {
         "namespace": "lindezhi",
         "protocol": "etcd",
         "etcdUrl": "http://192.168.139.129:2911",
@@ -33,18 +21,6 @@
         "sentinels": null,
         "providerHost": null,
         "providerPort": 0,
-        "zkConnectionString": null
-    },
-        {
-        "namespace": "simple",
-        "protocol": "simple",
-        "etcdUrl": null,
-        "redisHost": null,
-        "redisPort": 0,
-        "sentinelMaster": null,
-        "sentinels": null,
-        "providerHost": "127.0.0.1",
-        "providerPort": 4321,
         "zkConnectionString": null
     }
 ]
