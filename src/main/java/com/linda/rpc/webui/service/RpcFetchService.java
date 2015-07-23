@@ -71,12 +71,14 @@ public class RpcFetchService implements Service{
 	
 	@Override
 	public void startService() {
+		logger.info("start fetch service");
 		this.startAdminService();
 		this.startFetchTask();
 	}
 	
 	private void startFetchTask(){
 		timer.scheduleAtFixedRate(fetchTask, 100, fetchInterval);
+		logger.info("fetch timer task started");
 	}
 	
 	private void fetServerAndServices(){
@@ -90,9 +92,18 @@ public class RpcFetchService implements Service{
 						RpcFetchService.this.initConfig(config);
 					}else{
 						List<RpcHostAndPort> servers = adminService.getRpcServers();
+						if(servers!=null){
+							logger.info("fetchServer config:"+JSONUtils.toJSON(config)+
+									" servers:"+JSONUtils.toJSON(servers));
+						}
 						RpcFetchService.this.fireServerListeners(config, servers);
 						for(RpcHostAndPort server:servers){
 							List<RpcService> services = adminService.getRpcServices(server);
+							if(services!=null){
+								logger.info("fetchServices config:"+JSONUtils.toJSON(config)+
+										" server:"+JSONUtils.toJSON(server)+
+										" services:"+JSONUtils.toJSON(services));
+							}
 							RpcFetchService.this.fireServicesListeners(config, server, services);
 						}
 					}
@@ -103,6 +114,7 @@ public class RpcFetchService implements Service{
 	}
 	
 	private void initConfig(RpcConfig config){
+		logger.info("init condig:"+JSONUtils.toJSON(config));
 		try{
 			String protocol = config.getProtocol();
 			RpcProtocol rpcProtocol = RpcProtocol.getByName(protocol);
@@ -148,6 +160,7 @@ public class RpcFetchService implements Service{
 		}else{
 			throw new RpcException("configration null,please check configuration");
 		}
+		logger.info("started admin service");
 	}
 	
 	private void stopAdmin(){
@@ -162,6 +175,7 @@ public class RpcFetchService implements Service{
 	
 	@Override
 	public void stopService() {
+		logger.info("stop fetch server and services");
 		this.stopAdmin();
 		timer.cancel();
 		infoListeners.clear();

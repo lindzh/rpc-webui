@@ -58,6 +58,7 @@ public class FreemarkerService implements Service {
 			cfg.setDirectoryForTemplateLoading(new File(location));
 			cfg.setObjectWrapper(new DefaultObjectWrapper());
 			cfg.setNumberFormat("#");
+			logger.info("freemarker service started");
 		} catch (IOException e) {
 			logger.error("setDirectoryForTemplateLoading IOException location: "+location,e);
 			throw new RuntimeException(e);
@@ -67,6 +68,7 @@ public class FreemarkerService implements Service {
 	@Override
 	public void stopService() {
 		cfg.clearTemplateCache();
+		logger.info("freemarker service stoped");
 	}
 
 	public String getLocation() {

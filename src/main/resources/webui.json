@@ -10,17 +10,5 @@
         "providerHost": null,
         "providerPort": 0,
         "zkConnectionString": null
-    },
-        {
-        "namespace": "lindezhi",
-        "protocol": "etcd",
-        "etcdUrl": "http://192.168.139.129:2911",
-        "redisHost": null,
-        "redisPort": 0,
-        "sentinelMaster": null,
-        "sentinels": null,
-        "providerHost": null,
-        "providerPort": 0,
-        "zkConnectionString": null
     }
 ]
