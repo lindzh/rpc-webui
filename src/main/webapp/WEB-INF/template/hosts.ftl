@@ -36,6 +36,7 @@
 							<th>host</th>
 							<th>port</th>
 							<th>time</th>
+							<th>token</th>
 							<th>services</th>
 						</tr>
 					</thead>
@@ -45,6 +46,7 @@
 							<td>${host.host}</td>
 							<td>${host.port}</td>
 							<td>${parseDate(host.time)}</td>
+							<td>${host.token}</td>
 							<td><a href="/webui/host/services?namespace=${namespace}&hostAndPort=${host.host}:${host.port}">services</a></td>
 						</tr>
 					</#list>

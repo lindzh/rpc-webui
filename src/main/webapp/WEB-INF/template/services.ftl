@@ -45,6 +45,8 @@
 							<th>service</th>
 							<th>version</th>
 							<th>impl</th>
+							<th>application</th>
+							<th>group</th>
 							<th>time</th>
 							<th>hosts</th>
 						</tr>
@@ -56,6 +58,8 @@
 							<td>${service.name}</td>
 							<td>${service.version}</td>
 							<td>${service.impl}</td>
+							<td>${service.application}</td>
+							<td>${service.group}</td>
 							<td>${parseDate(service.time)}</td>
 							<td><a href="/webui/service/hosts?namespace=${namespace}&serviceName=${service.name}&serviceVersion=${service.version}">hosts</a></td>
 						</tr>
