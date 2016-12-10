@@ -44,7 +44,8 @@
 						<tr>
 							<th>service</th>
 							<th>version</th>
-							<th>impl</th>
+							<th>application</th>
+							<th>group</th>
 							<th>time</th>
 						</tr>
 					</thead>
@@ -54,7 +55,8 @@
 						<tr>
 							<td>${service.name}</td>
 							<td>${service.version}</td>
-							<td>${service.impl}</td>
+							<td>${service.application}</td>
+							<td>${service.group}</td>
 							<td>${parseDate(service.time)}</td>
 						</tr>
 						</#list>
