@@ -1,10 +1,6 @@
 package com.linda.rpc.webui.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -63,9 +59,9 @@ public class RpcFetchService implements Service{
 		}
 	}
 	
-	private void fireServicesListeners(RpcConfig config,RpcHostAndPort host,List<RpcService> services){
+	private void fireServicesListeners(RpcConfig config,Map<RpcHostAndPort, List<RpcService>> hashMap){
 		for(RpcInfoListener listener:this.infoListeners){
-			listener.onServices(config, host, services);
+			listener.onServices(config, hashMap);
 		}
 	}
 	
@@ -91,6 +87,7 @@ public class RpcFetchService implements Service{
 					if(adminService==null){
 						RpcFetchService.this.initConfig(config);
 					}else{
+						HashMap<RpcHostAndPort, List<RpcService>> hashMap = new HashMap<RpcHostAndPort, List<RpcService>>();
 						List<RpcHostAndPort> servers = adminService.getRpcServers();
 						if(servers!=null){
 							logger.info("fetchServer config:"+JSONUtils.toJSON(config)+
@@ -104,8 +101,10 @@ public class RpcFetchService implements Service{
 										" server:"+JSONUtils.toJSON(server)+
 										" services:"+JSONUtils.toJSON(services));
 							}
-							RpcFetchService.this.fireServicesListeners(config, server, services);
+							hashMap.put(server,services);
 						}
+
+						RpcFetchService.this.fireServicesListeners(config, hashMap);
 					}
 				}
 			});

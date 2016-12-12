@@ -1,11 +1,6 @@
 package com.linda.rpc.webui.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -22,13 +17,13 @@ public class RpcWebuiServiceImpl implements RpcWebuiService,RpcInfoListener{
 	
 	private ConcurrentHashMap<String, Set<RpcService>> namespaceServices = new ConcurrentHashMap<String, Set<RpcService>>();
 	
-	private ConcurrentHashMap<String,Set<RpcHostAndPort>> namespaceServiceHosts = new ConcurrentHashMap<String,Set<RpcHostAndPort>>();
+	private HashMap<String,Set<RpcHostAndPort>> namespaceServiceHosts = new HashMap<String,Set<RpcHostAndPort>>();
 	
 	private ConcurrentHashMap<String,List<RpcHostAndPort>> configProvidersCache = new ConcurrentHashMap<String,List<RpcHostAndPort>>();
 	
 	private ReadWriteLock readwriteLock = new ReentrantReadWriteLock(false);
 	
-	private ConcurrentHashMap<String,Set<RpcService>> namespaceHostServicesCache = new ConcurrentHashMap<String,Set<RpcService>>();
+	private HashMap<String,Set<RpcService>> namespaceHostServicesCache = new HashMap<String,Set<RpcService>>();
 	
 	@Override
 	public void onServers(RpcConfig config, List<RpcHostAndPort> hosts) {
@@ -45,7 +40,7 @@ public class RpcWebuiServiceImpl implements RpcWebuiService,RpcInfoListener{
 	}
 
 	@Override
-	public void onServices(RpcConfig config, RpcHostAndPort host, List<RpcService> services) {
+	public void onServices(RpcConfig config,Map<RpcHostAndPort,List<RpcService>> hostServiceMap) {
 		Lock lock = readwriteLock.writeLock();
 		try{
 			lock.lock();
@@ -56,21 +51,32 @@ public class RpcWebuiServiceImpl implements RpcWebuiService,RpcInfoListener{
 				namespaceServices.put(md5, new HashSet<RpcService>());
 				set = namespaceServices.get(md5);
 			}
-			set.addAll(services);
-			
-			//name space service host list
-			for(RpcService service:services){
-				String genKey = this.genKey(md5, service.getName(), service.getVersion());
-				Set<RpcHostAndPort> hosts = namespaceServiceHosts.get(genKey);
-				if(hosts==null){
-					hosts = new HashSet<RpcHostAndPort>();
-					namespaceServiceHosts.put(genKey, hosts);
+
+			HashMap<String, Set<RpcHostAndPort>> serviceHostsMap = new HashMap<String, Set<RpcHostAndPort>>();
+			HashMap<String, Set<RpcService>> hostServicesMap = new HashMap<String, Set<RpcService>>();
+
+			Set<RpcHostAndPort> hostAndPorts = hostServiceMap.keySet();
+			for(RpcHostAndPort hostAndPort: hostAndPorts){
+				set.addAll(hostServiceMap.get(hostAndPort));
+
+				List<RpcService> rpcServices = hostServiceMap.get(hostAndPort);
+
+				String servicesKey = this.genhostServicesKey(md5, hostAndPort.getHost()+":"+hostAndPort.getPort());
+				hostServicesMap.put(servicesKey,new HashSet<RpcService>(rpcServices));
+
+				for(RpcService service :rpcServices){
+					String genKey = this.genKey(md5, service.getName(), service.getVersion());
+					Set<RpcHostAndPort> hosts = serviceHostsMap.get(genKey);
+					if(hosts==null){
+						hosts = new HashSet<RpcHostAndPort>();
+						serviceHostsMap.put(genKey, hosts);
+					}
+					hosts.add(hostAndPort);
 				}
-				hosts.add(host);
 			}
-			//host service key
-			String servicesKey = this.genhostServicesKey(md5, host.getHost()+":"+host.getPort());
-			namespaceHostServicesCache.put(servicesKey, set);
+
+			namespaceServiceHosts = serviceHostsMap;
+			namespaceHostServicesCache = hostServicesMap;
 		}finally{
 			lock.unlock();
 		}
