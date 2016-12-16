@@ -34,7 +34,7 @@ public class ConUtils {
         info.setHost(hostAndPort.getHost());
         info.setPort(hostAndPort.getPort());
         info.setTime(System.currentTimeMillis());
-        info.setStatus(0);
+        info.setStatus(Const.HOST_STATUS_OFF);
         info.setToken(hostAndPort.getToken());
         info.setWeight(hostAndPort.getWeight());
         return info;
@@ -46,8 +46,8 @@ public class ConUtils {
         info.setHost(hw.getHost());
         info.setPort(hw.getPort());
         info.setTime(System.currentTimeMillis());
-        info.setToken("");
-        info.setStatus(0);
+        info.setToken("null");
+        info.setStatus(Const.HOST_STATUS_OFF);
         info.setWeight(hw.getWeight());
         return info;
     }

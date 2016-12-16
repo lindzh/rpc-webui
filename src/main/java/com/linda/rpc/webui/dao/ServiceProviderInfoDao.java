@@ -17,5 +17,11 @@ public interface ServiceProviderInfoDao {
 	public int updateById(@Param("obj")ServiceProviderInfo obj);
 	
 	public int deleteById(@Param("id")long id);
+
+	public int deleteByAppIdAndHostId(long appId,long hostId);
+
+	public ServiceProviderInfo getByAppHostAndServiceId(long appId,long hostId,long serviceId);
+
+	public int getServiceProviderCount(long appId,long ServiceId);
 	
 }

@@ -1,6 +1,7 @@
 package com.linda.rpc.webui.biz;
 
 import com.linda.framework.rpc.RpcService;
+import com.linda.rpc.webui.dao.ServiceInfoDao;
 import com.linda.rpc.webui.pojo.ServiceInfo;
 
 import java.util.List;
@@ -10,8 +11,14 @@ import java.util.List;
  */
 public class ServiceInfoService {
 
-    public void addOrupdateService(List<RpcService> services, long appId){
+    private ServiceInfoDao serviceInfoDao;
 
+    private ProviderService providerService;
+
+    private ConsumerService consumerService;
+
+    public List<ServiceInfo> addOrupdateService(List<RpcService> services, long appId){
+        return null;
     }
 
     public void updateProviderCount(){

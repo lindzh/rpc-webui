@@ -28,7 +28,7 @@ public class AppService {
     }
 
     public List<AppInfo> getAppList(){
-        return null;
+        return appInfoDao.getList();
     }
 
 }

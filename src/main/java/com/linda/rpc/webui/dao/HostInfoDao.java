@@ -27,5 +27,15 @@ public interface HostInfoDao {
 	public List<HostInfo> getListByAppIdAndStatus(@Param("appId")long appId,@Param("status")int status,@Param("limit")int limit,@Param("offset") int offset);
 	
 	public long getCountByAppIdAndStatus(@Param("appId")long appId,@Param("status")int status);
-	
+
+	public HostInfo getAppHost(long appId,String host,int port);
+
+	public int updateStatus(int status);
+
+	public List<HostInfo> getListByStatus(int status);
+
+
+	public List<HostInfo> getListByHostAndPort(String host,int port);
+
+	public HostInfo getByAppAndIp(long appid,String ip);
 }

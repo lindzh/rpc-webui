@@ -24,5 +24,7 @@ public interface AppInfoDao {
 	public List<AppInfo> getListByAppName(@Param("name")String name,@Param("limit")int limit,@Param("offset") int offset);
 	
 	public long getCountByAppName(@Param("name")String name);
+
+	public List<AppInfo> getList();
 	
 }

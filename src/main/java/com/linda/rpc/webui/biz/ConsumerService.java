@@ -1,19 +1,69 @@
 package com.linda.rpc.webui.biz;
 
 import com.linda.framework.rpc.cluster.ConsumeRpcObject;
+import com.linda.rpc.webui.dao.ServiceConsumerInfoDao;
+import com.linda.rpc.webui.pojo.AppInfo;
+import com.linda.rpc.webui.pojo.HostInfo;
+import com.linda.rpc.webui.pojo.ServiceConsumerInfo;
 
 /**
  * Created by lin on 2016/12/16.
  */
 public class ConsumerService {
 
+    private ServiceConsumerInfoDao serviceConsumerInfoDao;
+
+    private AppService appService;
+
+    private HostService hostService;
+
+
+
+    /**
+     * 给app和service添加消费者
+     * @param consumer
+     * @param appId
+     * @param serviceId
+     */
     public void addOrUpdate(ConsumeRpcObject consumer,long appId,long serviceId){
 
+        AppInfo consumerApp = appService.getOrAddApp(consumer.getApplication());
+        if(consumerApp==null){
+            return;
+        }
+
+        HostInfo host = hostService.getOrAddHost(consumerApp.getId(),consumer.getIp());
+        if(host==null){
+            return;
+        }
+
+        ServiceConsumerInfo consumerInfo = serviceConsumerInfoDao.getConsumer(appId, serviceId, consumerApp.getId(), host.getId());
+
+        if(consumerInfo!=null){
+            return;
+        }else{
+            ServiceConsumerInfo info = new ServiceConsumerInfo();
+            info.setTime(System.currentTimeMillis());
+            info.setComsumerHostId(host.getId());
+            info.setConsumerAppId(consumerApp.getId());
+            info.setServiceAppId(appId);
+            info.setServiceId(serviceId);
+            serviceConsumerInfoDao.addServiceConsumerInfo(info);
+        }
+    }
+
+    /**
+     * 消费者所属应用,消费者host
+     * @param appId
+     * @param hostId
+     */
+    public void clearConsumers(long appId,long hostId){
+        serviceConsumerInfoDao.deleteByConsumerAppIdAndHostId(appId, hostId);
     }
 
 
-    public void clearConsumers(long appId,long serviceId){
-
+    public int getServiceConsumeCount(long providerAppId,long providerServiceId){
+        return serviceConsumerInfoDao.getServiceConsumeCount(providerAppId, providerServiceId);
     }
 
 }
