@@ -48,12 +48,6 @@ public class ServiceConsumerInfo {
     private long comsumerHostId;
 
     /**
-     * 消费状态
-     */
-    @Column(column = "consumer_host_status")
-    private int status;
-
-    /**
      * 消费者上线时间
      */
     @Column(column = "consumer_host_uptime")

@@ -61,11 +61,13 @@ public class ServiceInfo {
     /**
      * 服务提供者数量
      */
+    @Column(column = "provider_count")
     private int providerCount;
 
     /**
      * 服务消费者数量
      */
+    @Column(column = "consumer_count")
     private int consumerCount;
 
 }

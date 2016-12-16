@@ -46,6 +46,12 @@ public class HostInfo {
     private long weight;
 
     /**
+     * token
+     */
+    @Column(column = "token")
+    private String token;
+
+    /**
      * 状态
      */
     @Column(column = "host_status")

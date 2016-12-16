@@ -9,13 +9,12 @@
 		<result property="serviceAppId" column="service_app_id"/>
 		<result property="consumerAppId" column="consumer_app_id"/>
 		<result property="comsumerHostId" column="consumer_host_id"/>
-		<result property="status" column="consumer_host_status"/>
 		<result property="time" column="consumer_host_uptime"/>
 	</resultMap>
 	
 	<insert id="addServiceConsumerInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.linda.rpc.webui.pojo.ServiceConsumerInfo">
-		insert into service_consumer_info(service_id,service_app_id,consumer_app_id,consumer_host_id,consumer_host_status,consumer_host_uptime)
-		 values(#{serviceId},#{serviceAppId},#{consumerAppId},#{comsumerHostId},#{status},#{time})
+		insert into service_consumer_info(service_id,service_app_id,consumer_app_id,consumer_host_id,consumer_host_uptime)
+		 values(#{serviceId},#{serviceAppId},#{consumerAppId},#{comsumerHostId},#{time})
 	</insert>
 	
 	<select id="getById" resultMap="ServiceConsumerInfoResultMap">
@@ -23,7 +22,7 @@
 	</select>
 	
 	<update id="updateById" parameterType="com.linda.rpc.webui.pojo.ServiceConsumerInfo">
-		update service_consumer_info set service_id=#{obj.serviceId},service_app_id=#{obj.serviceAppId},consumer_app_id=#{obj.consumerAppId},consumer_host_id=#{obj.comsumerHostId},consumer_host_status=#{obj.status},consumer_host_uptime=#{obj.time}
+		update service_consumer_info set service_id=#{obj.serviceId},service_app_id=#{obj.serviceAppId},consumer_app_id=#{obj.consumerAppId},consumer_host_id=#{obj.comsumerHostId},consumer_host_uptime=#{obj.time}
 		where id=#{obj.id}
 	</update>
 	

@@ -8,13 +8,12 @@
 		<result property="serviceId" column="service_id"/>
 		<result property="appId" column="app_id"/>
 		<result property="hostId" column="host_id"/>
-		<result property="status" column="provider_host_status"/>
 		<result property="time" column="provider_host_uptime"/>
 	</resultMap>
 	
 	<insert id="addServiceProviderInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.linda.rpc.webui.pojo.ServiceProviderInfo">
-		insert into service_provider_info(service_id,app_id,host_id,provider_host_status,provider_host_uptime)
-		 values(#{serviceId},#{appId},#{hostId},#{status},#{time})
+		insert into service_provider_info(service_id,app_id,host_id,provider_host_uptime)
+		 values(#{serviceId},#{appId},#{hostId},#{time})
 	</insert>
 	
 	<select id="getById" resultMap="ServiceProviderInfoResultMap">
@@ -22,7 +21,7 @@
 	</select>
 	
 	<update id="updateById" parameterType="com.linda.rpc.webui.pojo.ServiceProviderInfo">
-		update service_provider_info set service_id=#{obj.serviceId},app_id=#{obj.appId},host_id=#{obj.hostId},provider_host_status=#{obj.status},provider_host_uptime=#{obj.time}
+		update service_provider_info set service_id=#{obj.serviceId},app_id=#{obj.appId},host_id=#{obj.hostId},provider_host_uptime=#{obj.time}
 		where id=#{obj.id}
 	</update>
 	

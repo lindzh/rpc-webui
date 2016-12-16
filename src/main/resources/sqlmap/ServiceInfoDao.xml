@@ -11,11 +11,13 @@
 		<result property="impl" column="service_impl"/>
 		<result property="appId" column="app_id"/>
 		<result property="status" column="service_status"/>
+		<result property="providerCount" column="provider_count"/>
+		<result property="consumerCount" column="consumer_count"/>
 	</resultMap>
 	
 	<insert id="addServiceInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.linda.rpc.webui.pojo.ServiceInfo">
-		insert into service_info(service_name,service_version,service_group,service_impl,app_id,service_status)
-		 values(#{name},#{version},#{group},#{impl},#{appId},#{status})
+		insert into service_info(service_name,service_version,service_group,service_impl,app_id,service_status,provider_count,consumer_count)
+		 values(#{name},#{version},#{group},#{impl},#{appId},#{status},#{providerCount},#{consumerCount})
 	</insert>
 	
 	<select id="getById" resultMap="ServiceInfoResultMap">
@@ -23,8 +25,8 @@
 	</select>
 	
 	<update id="updateById" parameterType="com.linda.rpc.webui.pojo.ServiceInfo">
-		update service_info set service_name=#{obj.name},service_version=#{obj.version},service_group=#{obj.group},service_impl=#{obj.impl},app_id=#{obj.appId},service_status=#{obj.status}
-		where id=#{obj.id}
+		update service_info set service_name=#{obj.name},service_version=#{obj.version},service_group=#{obj.group},service_impl=#{obj.impl},
+		app_id=#{obj.appId},service_status=#{obj.status},provider_count=#{obj.providerCount},consumer_count=#{obj.consumerCount} where id=#{obj.id}
 	</update>
 	
 	<delete id="deleteById">

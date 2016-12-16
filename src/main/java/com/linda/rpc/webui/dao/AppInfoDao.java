@@ -17,7 +17,9 @@ public interface AppInfoDao {
 	public int updateById(@Param("obj")AppInfo obj);
 	
 	public int deleteById(@Param("id")long id);
-	
+
+
+	public AppInfo getByName(String name);
 	
 	public List<AppInfo> getListByAppName(@Param("name")String name,@Param("limit")int limit,@Param("offset") int offset);
 	

@@ -36,11 +36,6 @@ public class ServiceProviderInfo {
     @Column(column = "host_id")
     private long hostId;
 
-    /**
-     * 状态
-     */
-    @Column(column = "provider_host_status")
-    private int status;
 
     /**
      * 时间
