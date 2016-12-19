@@ -46,6 +46,12 @@ public class HostInfo {
     private long weight;
 
     /**
+     * 期望权重
+     */
+    @Column(column = "want_weight")
+    private long wantWeight;
+
+    /**
      * token
      */
     @Column(column = "token")

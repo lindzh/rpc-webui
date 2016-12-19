@@ -57,5 +57,23 @@
 		app_id=#{appId} and service_status=#{status}
 	</select>
 	
-	
+	<select id="getByAppIdGroupNameVersion" resultMap="ServiceInfoResultMap">
+		select * from service_info where
+		app_id=#{appId} and service_group=#{group} and service_name=#{name} and service_version=#{version}
+	</select>
+
+	<update id="updateConsumerCount">
+		update service_info as s set s.consumer_count = (select count(1) from service_consumer_info where service_id = s.id)
+	</update>
+
+	<update id="updateProviderCount">
+		update service_info as s set s.provider_count = (select count(1) from service_provider_info where service_id = s.id)
+	</update>
+
+	<update id="updateServiceStatus">
+		update service_info as s
+		set s.service_status =
+		(select case when count(1)>0 then 1 else 0 end as stat from service_provider_info where service_id = s.id)
+	</update>
+
 </mapper>

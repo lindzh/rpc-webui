@@ -8,14 +8,16 @@
 		<result property="host" column="host_ip"/>
 		<result property="port" column="host_port"/>
 		<result property="appId" column="app_id"/>
+		<result property="token" column="token"/>
 		<result property="weight" column="weight"/>
+		<result property="wantWeight" column="want_weight"/>
 		<result property="status" column="host_status"/>
 		<result property="time" column="up_time"/>
 	</resultMap>
 	
 	<insert id="addHostInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.linda.rpc.webui.pojo.HostInfo">
-		insert into host_info(host_ip,host_port,app_id,weight,host_status,up_time)
-		 values(#{host},#{port},#{appId},#{weight},#{status},#{time})
+		insert into host_info(host_ip,host_port,app_id,token,weight,want_weight,host_status,up_time)
+		 values(#{host},#{port},#{appId},#{token},#{weight},#{wantWeight},#{status},#{time})
 	</insert>
 	
 	<select id="getById" resultMap="HostInfoResultMap">
@@ -23,7 +25,8 @@
 	</select>
 	
 	<update id="updateById" parameterType="com.linda.rpc.webui.pojo.HostInfo">
-		update host_info set host_ip=#{obj.host},host_port=#{obj.port},app_id=#{obj.appId},weight=#{obj.weight},host_status=#{obj.status},up_time=#{obj.time}
+		update host_info set host_ip=#{obj.host},host_port=#{obj.port},app_id=#{obj.appId},token=#{obj.token},
+		weight=#{obj.weight},want_weight=#{obj.wantWeight},host_status=#{obj.status},up_time=#{obj.time}
 		where id=#{obj.id}
 	</update>
 	
@@ -54,6 +57,29 @@
 		select count(*) from host_info where 
 		app_id=#{appId} and host_status=#{status}
 	</select>
+
+	<select id="getAppHost" resultMap="HostInfoResultMap">
+		select * from host_info where
+		app_id=#{appId} and host_ip=#{host} and host_port=#{port}
+	</select>
+
+	<update id="updateStatus">
+		update host_info set host_status=#{status} where 1=1
+	</update>
+
+	<select id="getListByStatus" resultMap="HostInfoResultMap">
+		select * from host_info where
+		host_status=#{status}
+	</select>
 	
+	<select id="getListByHostAndPort" resultMap="HostInfoResultMap">
+		select * from host_info where
+		host_ip=#{host} and host_port=#{port}
+	</select>
+
+	<select id="getByAppAndIp" resultMap="HostInfoResultMap">
+		select * from host_info where
+		app_id=#{appId} and host_ip=#{host}
+	</select>
 	
 </mapper>

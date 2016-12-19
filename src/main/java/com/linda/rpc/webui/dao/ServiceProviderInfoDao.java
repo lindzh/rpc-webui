@@ -18,10 +18,12 @@ public interface ServiceProviderInfoDao {
 	
 	public int deleteById(@Param("id")long id);
 
-	public int deleteByAppIdAndHostId(long appId,long hostId);
 
-	public ServiceProviderInfo getByAppHostAndServiceId(long appId,long hostId,long serviceId);
 
-	public int getServiceProviderCount(long appId,long ServiceId);
+	public int deleteByAppIdAndHostId(@Param("appId") long appId,@Param("hostId") long hostId);
+
+	public ServiceProviderInfo getByAppHostAndServiceId(@Param("appId")long appId,@Param("hostId")long hostId,@Param("serviceId")long serviceId);
+
+	public int getServiceProviderCount(@Param("appId")long appId,@Param("serviceId") long ServiceId);
 	
 }

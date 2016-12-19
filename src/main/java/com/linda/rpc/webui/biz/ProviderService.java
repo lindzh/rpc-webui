@@ -4,19 +4,24 @@ import com.linda.framework.rpc.RpcService;
 import com.linda.rpc.webui.dao.ServiceProviderInfoDao;
 import com.linda.rpc.webui.pojo.ServiceInfo;
 import com.linda.rpc.webui.pojo.ServiceProviderInfo;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * Created by lin on 2016/12/16.
  */
+@Service
 public class ProviderService {
 
+    @Resource
     private ServiceInfoService serviceInfoService;
 
+    @Resource
     private ServiceProviderInfoDao serviceProviderInfoDao;
 
-    public void addOrUpdate(List<RpcService> service, long appId, long hostId){
+    public List<ServiceInfo> addOrUpdate(List<RpcService> service, long appId, long hostId){
         List<ServiceInfo> infos = serviceInfoService.addOrupdateService(service, appId);
         for(ServiceInfo info:infos){
             ServiceProviderInfo providerInfo = serviceProviderInfoDao.getByAppHostAndServiceId(appId, hostId, info.getId());
@@ -29,6 +34,7 @@ public class ProviderService {
                 serviceProviderInfoDao.addServiceProviderInfo(providerInfo1);
             }
         }
+        return infos;
     }
 
     public void clearServices(long appId,long hostId){

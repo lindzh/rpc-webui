@@ -36,6 +36,7 @@ public class ConUtils {
         info.setTime(System.currentTimeMillis());
         info.setStatus(Const.HOST_STATUS_OFF);
         info.setToken(hostAndPort.getToken());
+        info.setWantWeight(hostAndPort.getWeight());
         info.setWeight(hostAndPort.getWeight());
         return info;
     }
@@ -48,6 +49,7 @@ public class ConUtils {
         info.setTime(System.currentTimeMillis());
         info.setToken("null");
         info.setStatus(Const.HOST_STATUS_OFF);
+        info.setWantWeight(hw.getWeight());
         info.setWeight(hw.getWeight());
         return info;
     }

@@ -39,7 +39,7 @@ public interface ServiceConsumerInfoDao {
 	public long getCountByConsumerHostId(@Param("comsumerHostId")long comsumerHostId);
 
 
-	public int deleteByConsumerAppIdAndHostId(long consumeAppId,long consumerHostId);
+	public int deleteByConsumerAppIdAndHostId(@Param("consumerAppId")long consumeAppId,@Param("comsumerHostId")long consumerHostId);
 
 	/**
 	 *
@@ -49,8 +49,8 @@ public interface ServiceConsumerInfoDao {
 	 * @param cip 服务消费者机器
      * @return
      */
-	public ServiceConsumerInfo getConsumer(long pAppId,long pServiceid,long cAppId,long cHostId);
+	public ServiceConsumerInfo getConsumer(@Param("serviceAppId")long pAppId,@Param("serviceId")long pServiceid,@Param("consumerAppId")long cAppId,@Param("comsumerHostId")long cHostId);
 
-	public int getServiceConsumeCount(long providerAppId,long providerServiceId);
+	public long getServiceConsumeCount(@Param("serviceAppId")long providerAppId,@Param("serviceId")long providerServiceId);
 	
 }

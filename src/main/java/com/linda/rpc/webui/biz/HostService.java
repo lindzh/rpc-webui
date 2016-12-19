@@ -6,14 +6,18 @@ import com.linda.rpc.webui.dao.HostInfoDao;
 import com.linda.rpc.webui.pojo.HostInfo;
 import com.linda.rpc.webui.utils.ConUtils;
 import com.linda.rpc.webui.utils.Const;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * Created by lin on 2016/12/16.
  */
+@Service
 public class HostService {
 
+    @Resource
     private HostInfoDao hostInfoDao;
 
     public HostInfo getOrAdd(RpcHostAndPort hostAndPort,long appId){
@@ -79,6 +83,7 @@ public class HostService {
             info.setStatus(Const.HOST_STATUS_OFF);
             info.setToken("null");
             info.setWeight(100);
+            info.setWantWeight(100);
             hostInfoDao.addHostInfo(info);
             if(info.getId()>0){
                 return info;
@@ -110,5 +115,8 @@ public class HostService {
         return hostInfoDao.getListByStatus(Const.HOST_STATUS_OFF);
     }
 
+    public List<HostInfo> getNeedSyncList(){
+        return hostInfoDao.getNeedSyncList();
+    }
 
 }

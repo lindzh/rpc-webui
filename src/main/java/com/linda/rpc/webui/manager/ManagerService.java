@@ -8,23 +8,34 @@ import com.linda.framework.rpc.cluster.admin.RpcAdminService;
 import com.linda.rpc.webui.biz.*;
 import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.HostInfo;
+import com.linda.rpc.webui.pojo.ServiceInfo;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * Created by lin on 2016/12/16.
  */
+@Service("managerService")
 public class ManagerService {
 
+    @Resource
     private RpcAdminService adminService;
 
+    @Resource
     private AppService appService;
 
+    @Resource
     private HostService hostService;
 
+    @Resource
     private ServiceInfoService serviceInfoService;
 
+    @Resource
     private ConsumerService consumerService;
 
+    @Resource
     private ProviderService providerService;
 
 
@@ -64,17 +75,22 @@ public class ManagerService {
                 /**
                  * 机器提供的服务添加
                  */
-                this.doUpdateProviderServices(rpcServices,appInfo.getId(),hostInfo.getId());
+                List<ServiceInfo> infos = this.doUpdateProviderServices(rpcServices, appInfo.getId(), hostInfo.getId());
 
                 /**
                  * 消费者列表
                  */
-                this.fetchConsumers(rpcServices,appInfo.getId(),hostInfo.getId());
+                this.fetchConsumers(infos,appInfo.getId());
 
                 /**
                  * 权重
                  */
                 this.doFetchHostWeights(appInfo);
+
+                /**
+                 * 同步权重
+                 */
+                this.syncWeights();
             }
         }
 
@@ -90,10 +106,10 @@ public class ManagerService {
      * @param appId
      * @param hostId
      */
-    public void doUpdateProviderServices(List<RpcService> services, long appId, long hostId){
+    public List<ServiceInfo> doUpdateProviderServices(List<RpcService> services, long appId, long hostId){
         //先清除,再添加
         providerService.clearServices(appId,hostId);
-        providerService.addOrUpdate(services,appId,hostId);
+        return providerService.addOrUpdate(services, appId, hostId);
     }
 
     /**
@@ -112,16 +128,14 @@ public class ManagerService {
      * 获取消费者列表
      * @param services
      * @param appId
-     * @param serviceId
      */
-    public void fetchConsumers(List<RpcService> services,long appId,long serviceId){
+    public void fetchConsumers(List<ServiceInfo> services,long appId){
         //先清除老的,再添加新的。避免重复和状态不对的
-        consumerService.clearConsumers(appId, serviceId);
-
-        for(RpcService service:services){
-            List<ConsumeRpcObject> consumers = adminService.getConsumers(service.getGroup(), service.getName(), service.getVersion());
+        for(ServiceInfo info:services){
+            consumerService.clearConsumers(appId, info.getId());
+            List<ConsumeRpcObject> consumers = adminService.getConsumers(info.getGroup(), info.getName(), info.getVersion());
             for(ConsumeRpcObject consumer:consumers){
-                consumerService.addOrUpdate(consumer,appId,serviceId);
+                consumerService.addOrUpdate(consumer,appId,info.getId());
             }
         }
     }
@@ -155,6 +169,18 @@ public class ManagerService {
         List<AppInfo> list = appService.getAppList();
         for(AppInfo app:list){
             this.doFetchHostWeights(app);
+        }
+    }
+
+    public void syncWeights(){
+        List<HostInfo> needSyncList = hostService.getNeedSyncList();
+        for(HostInfo host:needSyncList){
+            AppInfo info = appService.getById(host.getId());
+            HostWeight weight = new HostWeight();
+            weight.setHost(host.getHost());
+            weight.setPort(host.getPort());
+            weight.setWeight((int)host.getWantWeight());
+            adminService.setWeight(info.getName(),weight);
         }
     }
 }

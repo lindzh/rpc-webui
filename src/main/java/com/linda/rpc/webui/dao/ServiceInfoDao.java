@@ -27,5 +27,15 @@ public interface ServiceInfoDao {
 	public List<ServiceInfo> getListByAppIdAndStatus(@Param("appId")long appId,@Param("status")int status,@Param("limit")int limit,@Param("offset") int offset);
 	
 	public long getCountByAppIdAndStatus(@Param("appId")long appId,@Param("status")int status);
-	
+
+
+	public ServiceInfo getByAppIdGroupNameVersion(@Param("appId")long appId,@Param("group")String group,@Param("name") String name,@Param("version") String version);
+
+	public void updateConsumerCount();
+
+	public int updateProviderCount();
+
+	public void updateServiceStatus();
+
+
 }

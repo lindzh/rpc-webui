@@ -32,13 +32,22 @@
 
 	<select id="getListByAppName" resultMap="AppInfoResultMap">
 		select * from app_info where
-		app_name=#{name}
+		app_name like #{name}
 		order by id desc limit #{limit} offset #{offset}
 	</select>
 	
 	<select id="getCountByAppName" resultType="long">
 		select count(*) from app_info where 
+		app_name like #{name}
+	</select>
+
+	<select id="getByName" resultMap="AppInfoResultMap">
+		select * from app_info where
 		app_name=#{name}
+	</select>
+
+	<select id="getList" resultMap="AppInfoResultMap">
+		select * from app_info where 1=1
 	</select>
 	
 	

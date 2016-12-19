@@ -5,16 +5,24 @@ import com.linda.rpc.webui.dao.ServiceConsumerInfoDao;
 import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.HostInfo;
 import com.linda.rpc.webui.pojo.ServiceConsumerInfo;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * Created by lin on 2016/12/16.
  */
+@Service
 public class ConsumerService {
 
+
+    @Resource
     private ServiceConsumerInfoDao serviceConsumerInfoDao;
 
+    @Resource
     private AppService appService;
 
+    @Resource
     private HostService hostService;
 
 
@@ -63,7 +71,7 @@ public class ConsumerService {
 
 
     public int getServiceConsumeCount(long providerAppId,long providerServiceId){
-        return serviceConsumerInfoDao.getServiceConsumeCount(providerAppId, providerServiceId);
+        return (int)serviceConsumerInfoDao.getServiceConsumeCount(providerAppId, providerServiceId);
     }
 
 }

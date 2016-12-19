@@ -22,7 +22,8 @@
 	</select>
 	
 	<update id="updateById" parameterType="com.linda.rpc.webui.pojo.ServiceConsumerInfo">
-		update service_consumer_info set service_id=#{obj.serviceId},service_app_id=#{obj.serviceAppId},consumer_app_id=#{obj.consumerAppId},consumer_host_id=#{obj.comsumerHostId},consumer_host_uptime=#{obj.time}
+		update service_consumer_info set service_id=#{obj.serviceId},service_app_id=#{obj.serviceAppId},
+		consumer_app_id=#{obj.consumerAppId},consumer_host_id=#{obj.comsumerHostId},consumer_host_uptime=#{obj.time}
 		where id=#{obj.id}
 	</update>
 	
@@ -77,6 +78,21 @@
 		select count(*) from service_consumer_info where 
 		consumer_host_id=#{comsumerHostId}
 	</select>
+
+	<delete id="deleteByConsumerAppIdAndHostId">
+		delete from service_consumer_info where
+		consumer_app_id=#{consumerAppId} and consumer_host_id=#{comsumerHostId}
+	</delete>
+
+	<select id="getConsumer" resultMap="ServiceConsumerInfoResultMap">
+		select * from service_consumer_info where
+		service_app_id=#{serviceAppId} and service_id=#{serviceId}
+		and consumer_app_id=#{consumerAppId} and consumer_host_id=#{comsumerHostId}
+	</select>
 	
+	<select id="getServiceConsumeCount" resultType="long">
+		select count(*) from service_consumer_info where
+		service_app_id=#{serviceAppId} and service_id=#{serviceId}
+	</select>
 	
 </mapper>

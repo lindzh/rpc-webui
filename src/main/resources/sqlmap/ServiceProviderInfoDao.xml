@@ -28,6 +28,20 @@
 	<delete id="deleteById">
 		delete from service_provider_info where id=#{id}
 	</delete>
+
+	<delete id="deleteByAppIdAndHostId">
+		delete from service_provider_info where app_id=#{appId} and host_id=#{hostId}
+	</delete>
+
+	<select id="getByAppHostAndServiceId" resultMap="ServiceProviderInfoResultMap">
+		select * from service_provider_info where
+		service_id=#{serviceId} and app_id=#{appId} and host_id=#{hostId}
+	</select>
+
+	<select id="getServiceProviderCount" resultType="long">
+		select count(*) from service_provider_info where
+		service_id=#{serviceId} and app_id=#{appId}
+	</select>
 	
 
 </mapper>

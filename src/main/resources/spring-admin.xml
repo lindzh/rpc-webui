@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <!--
+    <bean id="adminService" class="com.linda.framework.rpc.cluster.admin.SimpleRpcAdminService" init-method="startService" destroy-method="stopService">
+        <property name="namespace" value=""></property>
+        <property name="host" value=""></property>
+        <property name="port" value=""></property>
+    </bean>
+    -->
+
+    <!--
+    <bean id="adminService" class="com.linda.framework.rpc.cluster.etcd.EtcdRpcAdminService" init-method="startService" destroy-method="stopService">
+        <property name="namespace" value="${rpc.namespace}"></property>
+        <property name="etcdUrl" value="${rpc.etcdurl}"></property>
+    </bean>
+    -->
+
+    <!--
+    <bean id="adminService" class="com.linda.framework.rpc.cluster.redis.RedisRpcAdminService" init-method="startService" destroy-method="stopService">
+        <property name="namespace" value=""></property>
+        <property name="redisHost" value=""></property>
+        <property name="redisPort" value=""></property>
+        <property name="redisMasterName" value=""></property>
+        <property name="redisSentinels" value=""></property>
+    </bean>
+    -->
+
+    <bean id="adminService" class="com.linda.framework.rpc.cluster.zk.ZkRpcAdminService" init-method="startService" destroy-method="stopService">
+        <property name="namespace" value="${rpc.namespace}"></property>
+        <property name="connectString" value="${rpc.zkurl}"></property>
+    </bean>
+
+    <context:component-scan base-package="com.linda.rpc.webui.manager"></context:component-scan>
+
+    <context:component-scan base-package="com.linda.rpc.webui.biz"></context:component-scan>
+
+    <bean id="contextSchedule" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="configUpdateTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="configUpdateTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="configUpdateJobDetail" />
+        <property name="cronExpression" value="0 * * * * ?" />
+    </bean>
+
+    <bean id="configUpdateJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="managerService" />
+        <property name="targetMethod" value="doFetch" />
+    </bean>
+
+
+</beans>
