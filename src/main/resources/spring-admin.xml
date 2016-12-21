@@ -44,19 +44,65 @@
     <bean id="contextSchedule" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <ref bean="configUpdateTrigger"/>
+                <ref bean="updateServersTrigger"/>
+                <ref bean="fetchHostInfoTrigger"/>
+                <ref bean="syncConsumersTrigger"/>
+                <ref bean="updateServiceCountAndStatusTrigger"/>
+                <ref bean="weightTaskTrigger"/>
             </list>
         </property>
     </bean>
 
-    <bean id="configUpdateTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="configUpdateJobDetail" />
-        <property name="cronExpression" value="0 * * * * ?" />
+    <bean id="updateServersTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="updateServersJobDetail" />
+        <property name="cronExpression" value="0/30 * * * * ?" />
     </bean>
 
-    <bean id="configUpdateJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <bean id="updateServersJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="managerService" />
-        <property name="targetMethod" value="doFetch" />
+        <property name="targetMethod" value="doUpdateServers" />
+    </bean>
+
+    <bean id="fetchHostInfoTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="fetchHostInfoJobDetail" />
+        <property name="cronExpression" value="10/30 * * * * ?" />
+    </bean>
+
+    <bean id="fetchHostInfoJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="managerService" />
+        <property name="targetMethod" value="doFetchHostInfoTask" />
+    </bean>
+
+
+    <bean id="syncConsumersTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="syncConsumersJobDetail" />
+        <property name="cronExpression" value="20/30 * * * * ?" />
+    </bean>
+
+    <bean id="syncConsumersJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="managerService" />
+        <property name="targetMethod" value="doSyncConsumers" />
+    </bean>
+
+
+    <bean id="updateServiceCountAndStatusTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="updateServiceCountAndStatusJobDetail" />
+        <property name="cronExpression" value="5/30 * * * * ?" />
+    </bean>
+
+    <bean id="updateServiceCountAndStatusJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="managerService" />
+        <property name="targetMethod" value="doUpdateServiceCountAndStatus" />
+    </bean>
+
+    <bean id="weightTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="weightTaskJobDetail" />
+        <property name="cronExpression" value="7/30 * * * * ?" />
+    </bean>
+
+    <bean id="weightTaskJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="managerService" />
+        <property name="targetMethod" value="doWeightTask" />
     </bean>
 
 

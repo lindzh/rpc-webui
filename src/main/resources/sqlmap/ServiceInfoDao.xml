@@ -48,13 +48,19 @@
 	
 	<select id="getListByAppIdAndStatus" resultMap="ServiceInfoResultMap">
 		select * from service_info where
-		app_id=#{appId} and service_status=#{status}
+		app_id=#{appId}
+		<if test="status&gt;-1">
+			and service_status=#{status}
+		</if>
 		order by id desc limit #{limit} offset #{offset}
 	</select>
 	
 	<select id="getCountByAppIdAndStatus" resultType="long">
 		select count(*) from service_info where 
-		app_id=#{appId} and service_status=#{status}
+		app_id=#{appId}
+		<if test="status&gt;-1">
+			and service_status=#{status}
+		</if>
 	</select>
 	
 	<select id="getByAppIdGroupNameVersion" resultMap="ServiceInfoResultMap">

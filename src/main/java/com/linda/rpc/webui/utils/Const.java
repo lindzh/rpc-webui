@@ -12,4 +12,6 @@ public class Const {
     public static final int SERVICE_OK = 1;
 
     public static final int SERVICE_ERR = 0;
+
+    public static final int SERVICE_ALL = -1;
 }

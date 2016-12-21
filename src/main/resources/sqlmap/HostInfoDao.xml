@@ -71,6 +71,11 @@
 		select * from host_info where
 		host_status=#{status}
 	</select>
+
+	<select id="getProviderListByStatus" resultMap="HostInfoResultMap">
+		select * from host_info where
+		host_status=#{status} and host_port&gt;1000
+	</select>
 	
 	<select id="getListByHostAndPort" resultMap="HostInfoResultMap">
 		select * from host_info where

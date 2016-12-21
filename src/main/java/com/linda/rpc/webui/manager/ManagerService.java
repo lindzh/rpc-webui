@@ -3,12 +3,14 @@ package com.linda.rpc.webui.manager;
 import com.linda.framework.rpc.RpcService;
 import com.linda.framework.rpc.cluster.ConsumeRpcObject;
 import com.linda.framework.rpc.cluster.HostWeight;
+import com.linda.framework.rpc.cluster.JSONUtils;
 import com.linda.framework.rpc.cluster.RpcHostAndPort;
 import com.linda.framework.rpc.cluster.admin.RpcAdminService;
 import com.linda.rpc.webui.biz.*;
 import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.HostInfo;
 import com.linda.rpc.webui.pojo.ServiceInfo;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,66 +40,77 @@ public class ManagerService {
     @Resource
     private ProviderService providerService;
 
+    private Logger logger = Logger.getLogger("MANAGER");
+
 
     /**
      * 定时任务执行
      */
     public void doFetch(){
+        //拿到机器列表
+        this.doUpdateServers();
+        //拿到服务信息
+        this.doFetchHostInfoTask();
+        //消费者同步
+        this.doSyncConsumers();
+        //服务状态和数量
+        this.doUpdateServiceCountAndStatus();
+        //权重
+        this.doWeightTask();
 
+    }
+
+    public void doFetchHostInfoTask(){
+        List<HostInfo> hosts = hostService.getProviderOnHosts();
+        for(HostInfo host:hosts){
+            this.doFetchNewServerInfos(host);
+        }
+    }
+
+    /**
+     * 机器上的服务task
+     * @param host
+     */
+    public void doFetchNewServerInfos(HostInfo host){
+        RpcHostAndPort hostAndPort = new RpcHostAndPort();
+        hostAndPort.setHost(host.getHost());
+        hostAndPort.setPort(host.getPort());
+        hostAndPort.setWeight((int)host.getWeight());
+        hostAndPort.setToken(host.getToken());
+        List<RpcService> rpcServices = adminService.getRpcServices(hostAndPort);
+
+        if(rpcServices!=null&&rpcServices.size()>0){
+
+//            String application = rpcServices.get(0).getApplication();
+
+            /**
+             * 机器提供的服务添加
+             */
+            this.doUpdateProviderServices(rpcServices, host.getAppId(), host.getId());
+        }
+    }
+
+    /**
+     * 机器task
+     */
+    public void doUpdateServers(){
         List<RpcHostAndPort> rpcServers = adminService.getRpcServers();
-
+        logger.info("[SERVERS] rpcservers:"+JSONUtils.toJSON(rpcServers));
         hostService.updateServersOff();
         hostService.updateServerOn(rpcServers);
-
         List<HostInfo> offServers = hostService.getOffServers();
-
         this.doOffServers(offServers);
+    }
 
-        //在线机器的更新
-        for(RpcHostAndPort hostAndPort:rpcServers){
-
-            List<RpcService> rpcServices = adminService.getRpcServices(hostAndPort);
-
-            if(rpcServices.size()>0){
-
-                String application = rpcServices.get(0).getApplication();
-
-                /**
-                 * 应用更新与添加
-                 */
-                AppInfo appInfo = appService.getOrAddApp(application);
-
-                /**
-                 * 机器添加
-                 */
-                HostInfo hostInfo = hostService.getOrAdd(hostAndPort, appInfo.getId());
-
-                /**
-                 * 机器提供的服务添加
-                 */
-                List<ServiceInfo> infos = this.doUpdateProviderServices(rpcServices, appInfo.getId(), hostInfo.getId());
-
-                /**
-                 * 消费者列表
-                 */
-                this.fetchConsumers(infos,appInfo.getId());
-
-                /**
-                 * 权重
-                 */
-                this.doFetchHostWeights(appInfo);
-
-                /**
-                 * 同步权重
-                 */
-                this.syncWeights();
-            }
+    /**
+     * 消费者task
+     */
+    public void doSyncConsumers(){
+        List<AppInfo> appList = appService.getAppList();
+        for(AppInfo app:appList){
+            List<ServiceInfo> services = serviceInfoService.getListByAppId(app.getId());
+            this.fetchConsumers(services,app.getId());
         }
-
-        //更新服务提供者与消费者数量以及服务状态
-        this.doUpdateServiceCountAndStatus();
-        //权重更新
-        this.updateWeights();
     }
 
     /**
@@ -134,6 +147,7 @@ public class ManagerService {
         for(ServiceInfo info:services){
             consumerService.clearConsumers(appId, info.getId());
             List<ConsumeRpcObject> consumers = adminService.getConsumers(info.getGroup(), info.getName(), info.getVersion());
+            logger.info("[CONSUMERS] service:"+info.getGroup()+"_"+info.getName()+"_"+info.getVersion()+" consumers:"+JSONUtils.toJSON(consumers));
             for(ConsumeRpcObject consumer:consumers){
                 consumerService.addOrUpdate(consumer,appId,info.getId());
             }
@@ -146,20 +160,30 @@ public class ManagerService {
      */
     public void doOffServers(List<HostInfo> offServers){
         for(HostInfo server:offServers){
+            logger.info("[OFFSERVER] off server:"+ JSONUtils.toJSON(server));
             consumerService.clearConsumers(server.getAppId(),server.getId());
             providerService.clearServices(server.getAppId(),server.getId());
         }
+        //更新服务消费者,提供者数量
         this.doUpdateServiceCountAndStatus();
     }
 
     /**
-     * 更新服务状态
+     * 服务状态,提供者,消费者task
      */
     public void doUpdateServiceCountAndStatus(){
         //更新服务的提供者数量,消费者数量,以及状态
         serviceInfoService.updateProviderCount();
         serviceInfoService.updateServiceStatus();
         serviceInfoService.updateConsumerCount();
+    }
+
+    /**
+     * 权重task
+     */
+    public void doWeightTask(){
+        updateWeights();
+        syncWeights();
     }
 
     /**
@@ -172,6 +196,9 @@ public class ManagerService {
         }
     }
 
+    /**
+     * 同步权重
+     */
     public void syncWeights(){
         List<HostInfo> needSyncList = hostService.getNeedSyncList();
         for(HostInfo host:needSyncList){

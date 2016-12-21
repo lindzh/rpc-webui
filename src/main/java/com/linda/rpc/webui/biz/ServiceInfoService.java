@@ -61,4 +61,13 @@ public class ServiceInfoService {
         serviceInfoDao.updateConsumerCount();
     }
 
+    /**
+     * 获取service列表
+     * @param appId
+     * @return
+     */
+    public List<ServiceInfo> getListByAppId(long appId){
+        return serviceInfoDao.getListByAppIdAndStatus(appId,Const.SERVICE_ALL,10000,0);
+    }
+
 }

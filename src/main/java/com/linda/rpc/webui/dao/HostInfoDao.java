@@ -35,6 +35,8 @@ public interface HostInfoDao {
 
 	public List<HostInfo> getListByStatus(@Param("status")int status);
 
+	public List<HostInfo> getProviderListByStatus(@Param("status")int status);
+
 
 	public List<HostInfo> getListByHostAndPort(@Param("host")String host,@Param("port")int port);
 

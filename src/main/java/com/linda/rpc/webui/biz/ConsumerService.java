@@ -40,7 +40,7 @@ public class ConsumerService {
             return;
         }
 
-        HostInfo host = hostService.getOrAddHost(consumerApp.getId(),consumer.getIp());
+        HostInfo host = hostService.getOrAddHost(consumerApp.getId(),consumer.getIp(),true);
         if(host==null){
             return;
         }
