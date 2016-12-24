@@ -6,6 +6,7 @@ import com.linda.framework.rpc.cluster.RpcHostAndPort;
 import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.HostInfo;
 import com.linda.rpc.webui.pojo.ServiceInfo;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by lin on 2016/12/16.
@@ -54,6 +55,13 @@ public class ConUtils {
         return info;
     }
 
+    public static String fixKeyword(String keyword){
+        String mykey = null;
+        if(StringUtils.isNotBlank(keyword)){
+            mykey = "%"+keyword+"%";
+        }
+        return mykey;
+    }
 
 
 }

@@ -34,15 +34,37 @@
 	</delete>
 	
 
-	<select id="getListByServiceName" resultMap="ServiceInfoResultMap">
-		select * from service_info where
-		service_name=#{name}
+	<select id="getListByNameAndAppId" resultMap="ServiceInfoResultMap">
+		select * from service_info
+		<if test="(name!=null)||(appId>0)">
+			where
+			<if test="name!=null">
+				service_name like #{name}
+			</if>
+			<if test="appId&gt;0">
+				<if test="name!=null">
+					and
+				</if>
+				app_id=#{appId}
+			</if>
+		</if>
 		order by id desc limit #{limit} offset #{offset}
 	</select>
 	
-	<select id="getCountByServiceName" resultType="long">
-		select count(*) from service_info where 
-		service_name=#{name}
+	<select id="getCountByNameAndAppId" resultType="long">
+		select count(*) from service_info
+		<if test="(name!=null)||(appId>0)">
+			where
+			<if test="name!=null">
+				service_name like #{name}
+			</if>
+			<if test="appId&gt;0">
+				<if test="name!=null">
+					and
+				</if>
+				app_id=#{appId}
+			</if>
+		</if>
 	</select>
 	
 	
@@ -81,5 +103,18 @@
 		set s.service_status =
 		(select case when count(1)>0 then 1 else 0 end as stat from service_provider_info where service_id = s.id)
 	</update>
+
+	<select id="getConsumeServicesByAppId" resultMap="ServiceInfoResultMap">
+		select * from service_info where id in(select distinct(service_id) from service_consumer_info where consumer_app_id=#{appId})
+	</select>
+
+	<select id="getProvideServicesByHostId" resultMap="ServiceInfoResultMap">
+		select * from service_info where id in(select distinct(service_id) from service_provider_info where host_id=#{hostId})
+	</select>
+
+
+	<select id="getConsumeServicesByHostId" resultMap="ServiceInfoResultMap">
+		select * from service_info where id in(select distinct(service_id) from service_consumer_info where consumer_host_id=#{hostId})
+	</select>
 
 </mapper>

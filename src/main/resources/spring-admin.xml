@@ -9,28 +9,29 @@
 
     <!--
     <bean id="adminService" class="com.linda.framework.rpc.cluster.admin.SimpleRpcAdminService" init-method="startService" destroy-method="stopService">
-        <property name="namespace" value=""></property>
+        <property name="namespace" value="default"></property>
         <property name="host" value=""></property>
         <property name="port" value=""></property>
     </bean>
     -->
 
-
+    <!--
     <bean id="adminService" class="com.linda.framework.rpc.cluster.etcd.EtcdRpcAdminService" init-method="startService" destroy-method="stopService">
         <property name="namespace" value="${rpc.namespace}"></property>
         <property name="etcdUrl" value="${rpc.etcdurl}"></property>
     </bean>
+    -->
 
 
-    <!--
     <bean id="adminService" class="com.linda.framework.rpc.cluster.redis.RedisRpcAdminService" init-method="startService" destroy-method="stopService">
-        <property name="namespace" value=""></property>
-        <property name="redisHost" value=""></property>
-        <property name="redisPort" value=""></property>
+        <property name="namespace" value="default"></property>
+        <property name="redisHost" value="127.0.0.1"></property>
+        <property name="redisPort" value="6379"></property>
+        <!--
         <property name="redisMasterName" value=""></property>
         <property name="redisSentinels" value=""></property>
+        -->
     </bean>
-    -->
 
     <!--
     <bean id="adminService" class="com.linda.framework.rpc.cluster.zk.ZkRpcAdminService" init-method="startService" destroy-method="stopService">

@@ -19,9 +19,9 @@ public interface ServiceInfoDao {
 	public int deleteById(@Param("id")long id);
 	
 	
-	public List<ServiceInfo> getListByServiceName(@Param("name")String name,@Param("limit")int limit,@Param("offset") int offset);
+	public List<ServiceInfo> getListByNameAndAppId(@Param("name")String name,@Param("appId")long appId,@Param("limit")int limit,@Param("offset") int offset);
 	
-	public long getCountByServiceName(@Param("name")String name);
+	public long getCountByNameAndAppId(@Param("name")String name,@Param("appId")long appId);
 	
 	
 	public List<ServiceInfo> getListByAppIdAndStatus(@Param("appId")long appId,@Param("status")int status,@Param("limit")int limit,@Param("offset") int offset);
@@ -36,6 +36,13 @@ public interface ServiceInfoDao {
 	public int updateProviderCount();
 
 	public void updateServiceStatus();
+
+
+	public List<ServiceInfo> getConsumeServicesByAppId(@Param("appId")long appId);
+
+	public List<ServiceInfo> getProvideServicesByHostId(@Param("hostId")long hostid);
+
+	public List<ServiceInfo> getConsumeServicesByHostId(@Param("hostId")long hostid);
 
 
 }

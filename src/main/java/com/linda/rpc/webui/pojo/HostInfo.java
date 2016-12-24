@@ -70,4 +70,7 @@ public class HostInfo {
     @Column(column = "up_time")
     private long time;
 
+
+    private AppInfo app;
+
 }

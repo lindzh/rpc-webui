@@ -70,4 +70,6 @@ public class ServiceInfo {
     @Column(column = "consumer_count")
     private int consumerCount;
 
+    //填充信息
+    private AppInfo app;
 }

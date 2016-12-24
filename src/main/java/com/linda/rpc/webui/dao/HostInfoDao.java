@@ -43,4 +43,16 @@ public interface HostInfoDao {
 	public HostInfo getByAppAndIp(@Param("appId")long appid,@Param("host")String ip);
 
 	public List<HostInfo> getNeedSyncList();
+
+	public List<HostInfo> getProviderListByServiceId(@Param("serviceId")long serviceId);
+
+	public List<HostInfo> getConsumerListByServiceId(@Param("serviceId")long serviceId);
+
+	public List<HostInfo> getProviderListByAppId(@Param("appId")long appId);
+
+	public List<HostInfo> getConsumerListByAppId(@Param("appId")long appId);
+
+	public List<HostInfo> getListByAppIdWithPage(@Param("appId")long appId,@Param("limit")int limit,@Param("offset")int offset);
+
+	public long getCountByAppId(@Param("appId")long appId);
 }

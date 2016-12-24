@@ -5,12 +5,14 @@ import com.linda.framework.rpc.cluster.RpcHostAndPort;
 import com.linda.rpc.webui.dao.HostInfoDao;
 import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.HostInfo;
+import com.linda.rpc.webui.utils.CollectionUtils;
 import com.linda.rpc.webui.utils.ConUtils;
 import com.linda.rpc.webui.utils.Const;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lin on 2016/12/16.
@@ -133,6 +135,70 @@ public class HostService {
 
     public List<HostInfo> getProviderOnHosts(){
         return hostInfoDao.getProviderListByStatus(Const.HOST_STATUS_ON);
+    }
+
+
+    private void setApp(HostInfo info){
+        if(info!=null){
+            info.setApp(appService.getById(info.getAppId()));
+        }
+    }
+    /**
+     *
+     * @param appId
+     * @return
+     */
+    public List<HostInfo> getListByAppId(long appId){
+        return hostInfoDao.getListByAppIdAndStatus(appId,Const.HOST_STATUS_ALL,10000,0);
+    }
+
+    public List<HostInfo> getProviderListByServiceId(long serviceId){
+
+        return hostInfoDao.getProviderListByServiceId(serviceId);
+    }
+
+    public List<HostInfo> getConsumerListByServiceId(long serviceId){
+
+        return hostInfoDao.getConsumerListByServiceId(serviceId);
+    }
+
+    public List<HostInfo> getProviderListByAppId(long appId){
+
+        return hostInfoDao.getProviderListByAppId(appId);
+    }
+
+    public List<HostInfo> getConsumerListByAppId(long appId){
+
+        return hostInfoDao.getConsumerListByAppId(appId);
+    }
+
+    public int getCountByAppId(long appId){
+
+        return (int)hostInfoDao.getCountByAppId(appId);
+    }
+
+    public List<HostInfo> getListByAppIdWithPage(long appId,int limit,int offset){
+
+        return hostInfoDao.getListByAppIdWithPage(appId, limit, offset);
+    }
+
+    public List<HostInfo> setApps(List<HostInfo> hosts){
+        if(hosts!=null&&hosts.size()>0){
+            List<AppInfo> appList = appService.getAppList();
+            Map<Long, AppInfo> appInfoMap = CollectionUtils.toMap(appList, "id", Long.class);
+            for(HostInfo info:hosts){
+                info.setApp(appInfoMap.get(info.getAppId()));
+            }
+        }
+        return hosts;
+    }
+
+    public HostInfo getById(long id,boolean app){
+        HostInfo info = hostInfoDao.getById(id);
+        if(info!=null&&app){
+            this.setApp(info);
+        }
+        return info;
     }
 
 }

@@ -2,14 +2,18 @@ package com.linda.rpc.webui.biz;
 
 import com.linda.framework.rpc.RpcService;
 import com.linda.rpc.webui.dao.ServiceInfoDao;
+import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.ServiceInfo;
+import com.linda.rpc.webui.utils.CollectionUtils;
 import com.linda.rpc.webui.utils.ConUtils;
 import com.linda.rpc.webui.utils.Const;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lin on 2016/12/16.
@@ -25,6 +29,9 @@ public class ServiceInfoService {
 
     @Resource
     private ConsumerService consumerService;
+
+    @Resource
+    private AppService appService;
 
     /**
      * 查询,不存在就添加
@@ -68,6 +75,49 @@ public class ServiceInfoService {
      */
     public List<ServiceInfo> getListByAppId(long appId){
         return serviceInfoDao.getListByAppIdAndStatus(appId,Const.SERVICE_ALL,10000,0);
+    }
+
+    public long getCountByKeywordAndAppId(String keyword,long appId){
+        return serviceInfoDao.getCountByNameAndAppId(ConUtils.fixKeyword(keyword),appId);
+    }
+
+    public List<ServiceInfo> getListByKeywordAndAppId(String keyword,long appId,int limit,int offset){
+        List<ServiceInfo> infos = serviceInfoDao.getListByNameAndAppId(ConUtils.fixKeyword(keyword), appId, limit, offset);
+        this.setApp(infos);
+        return infos;
+    }
+
+    public ServiceInfo getById(long id,boolean app){
+        ServiceInfo info = serviceInfoDao.getById(id);
+        if(info!=null&&app){
+            AppInfo appInfo = appService.getById(info.getAppId());
+            info.setApp(appInfo);
+        }
+        return info;
+    }
+
+    private List<ServiceInfo> setApp(List<ServiceInfo> services){
+        if(services!=null&&services.size()>0){
+            List<AppInfo> apps = appService.getAppList();
+            Map<Long, AppInfo> appMap = CollectionUtils.toMap(apps, "id", Long.class);
+            for(ServiceInfo info:services){
+                info.setApp(appMap.get(info.getAppId()));
+            }
+        }
+        return services;
+    }
+
+
+    public List<ServiceInfo> getConsumeServicesByAppId(long appId){
+        return serviceInfoDao.getConsumeServicesByAppId(appId);
+    }
+
+    public List<ServiceInfo> getProvideServicesByHostId(long hostid){
+        return serviceInfoDao.getProvideServicesByHostId(hostid);
+    }
+
+    public List<ServiceInfo> getConsumeServicesByHostId(long hostid){
+        return serviceInfoDao.getConsumeServicesByHostId(hostid);
     }
 
 }
