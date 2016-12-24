@@ -5,6 +5,7 @@ import com.linda.rpc.webui.biz.HostService;
 import com.linda.rpc.webui.biz.ServiceInfoService;
 import com.linda.rpc.webui.pojo.HostInfo;
 import com.linda.rpc.webui.pojo.ServiceInfo;
+import com.linda.rpc.webui.utils.PackUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,9 @@ public class HostController extends BasicController {
      * @return
      */
     @RequestMapping(value="/host/list",method = RequestMethod.GET)
-    public String hostList(@RequestParam("appId") long appId, @RequestParam("limit") int limit, @RequestParam("offset")int offset, ModelMap model){
+    public String hostList(@RequestParam(value="appId",defaultValue = "0",required = false) long appId,
+                           @RequestParam(value="limit",defaultValue = "50",required = false) int limit,
+                           @RequestParam(value="offset",defaultValue = "0",required = false)int offset, ModelMap model){
         int total = hostService.getCountByAppId(appId);
 
         if(total>0){
@@ -49,7 +52,9 @@ public class HostController extends BasicController {
         model.put("appId",appId);
         model.put("total",total);
         this.setApps(model);
-        return "host_list";
+//        return "host_list";
+        PackUtils.packModel(model);
+        return "json";
     }
 
     @RequestMapping(value="/host/detail",method = RequestMethod.GET)
@@ -63,7 +68,9 @@ public class HostController extends BasicController {
             model.put("consumeServices",consumeServices);
         }
         this.setApps(model);
-        return "host_detail";
+//        return "host_detail";
+        PackUtils.packModel(model);
+        return "json";
     }
 
 }

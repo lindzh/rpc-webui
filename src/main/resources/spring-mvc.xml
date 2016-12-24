@@ -28,6 +28,7 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
         <property name="serializationInclusion">
             <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
@@ -59,8 +60,7 @@
             </map>
         </property>
     </bean>
-    <bean
-            class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="defaultContentType" value="application/json" />
         <property name="mediaTypes">
             <map>
@@ -91,15 +91,17 @@
                         <set>
                             <value>data</value>
                             <value>code</value>
-                            <value>msg</value>
+                            <value>message</value>
                         </set>
                     </property>
                 </bean>
+
                 <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
                     <property name="marshaller" ref="xstreamMarshaller"></property>
-                    <property name="modelKey" value="result"></property>
+                    <property name="modelKey" value="data"></property>
                     <property name="contentType" value="application/xml" />
                 </bean>
+
             </list>
         </property>
     </bean>

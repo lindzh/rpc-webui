@@ -6,6 +6,7 @@ import com.linda.rpc.webui.biz.ServiceInfoService;
 import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.HostInfo;
 import com.linda.rpc.webui.pojo.ServiceInfo;
+import com.linda.rpc.webui.utils.PackUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,8 +42,10 @@ public class ServiceController extends BasicController{
      * @return
      */
     @RequestMapping(value="service/list",method = RequestMethod.GET)
-    public String serviceList(@RequestParam("keyword") String keyword, @RequestParam("appId") long appId,
-                              @RequestParam("limit") int limit, @RequestParam("offset") int offset, ModelMap model){
+    public String serviceList(@RequestParam(value="keyword",defaultValue = " ",required = false) String keyword,
+                              @RequestParam(value="appId",defaultValue = "0",required = false) long appId,
+                              @RequestParam(value="limit",defaultValue = "50",required = false) int limit,
+                              @RequestParam(value="offset",defaultValue = "0",required = false) int offset, ModelMap model){
 
         long total = serviceInfoService.getCountByKeywordAndAppId(keyword,  appId);
         if(total>0){
@@ -59,7 +62,9 @@ public class ServiceController extends BasicController{
         model.put("appId",appId);
         model.put("limit",limit);
         model.put("offset",offset);
-        return "service_list";
+//        return "service_list";
+        PackUtils.packModel(model);
+        return "json";
     }
 
     /**
@@ -79,7 +84,9 @@ public class ServiceController extends BasicController{
             model.put("consumers",consumers);
         }
         this.setApps(model);
-        return "service_detail";
+//        return "service_detail";
+        PackUtils.packModel(model);
+        return "json";
     }
 
 

@@ -23,7 +23,7 @@
     -->
 
 
-    <bean id="adminService" class="com.linda.framework.rpc.cluster.redis.RedisRpcAdminService" init-method="startService" destroy-method="stopService">
+    <bean id="adminService" class="com.linda.framework.rpc.cluster.redis.RedisRpcAdminService"  destroy-method="stopService">
         <property name="namespace" value="default"></property>
         <property name="redisHost" value="127.0.0.1"></property>
         <property name="redisPort" value="6379"></property>
@@ -32,7 +32,6 @@
         <property name="redisSentinels" value=""></property>
         -->
     </bean>
-
     <!--
     <bean id="adminService" class="com.linda.framework.rpc.cluster.zk.ZkRpcAdminService" init-method="startService" destroy-method="stopService">
         <property name="namespace" value="${rpc.namespace}"></property>
@@ -44,6 +43,7 @@
 
     <context:component-scan base-package="com.linda.rpc.webui.biz"></context:component-scan>
 
+    <!--
     <bean id="contextSchedule" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
@@ -55,6 +55,7 @@
             </list>
         </property>
     </bean>
+    -->
 
     <bean id="updateServersTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="updateServersJobDetail" />

@@ -11,9 +11,16 @@ public class Const {
 
     public static final int HOST_STATUS_ALL = -1;
 
+
+
     public static final int SERVICE_OK = 1;
 
     public static final int SERVICE_ERR = 0;
 
     public static final int SERVICE_ALL = -1;
+
+
+    public static final int CODE_SUCCESS = 200;
+
+    public static final int CODE_PARAM_ERROR = 309;
 }

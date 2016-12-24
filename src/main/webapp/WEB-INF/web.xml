@@ -6,7 +6,10 @@
     <display-name>rpc-webui</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:biz-dubbo-consumer.xml</param-value>
+        <param-value>
+            classpath:mybatis-config.xml
+            classpath:spring-admin.xml
+        </param-value>
     </context-param>
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -70,10 +73,10 @@
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
-        <location>/res/html/404.html</location>
+        <location>/html/404.htm</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/res/html/50x.html</location>
+        <location>/html/50x.htm</location>
     </error-page>
 </web-app>

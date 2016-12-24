@@ -6,6 +6,7 @@ import com.linda.rpc.webui.biz.ServiceInfoService;
 import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.HostInfo;
 import com.linda.rpc.webui.pojo.ServiceInfo;
+import com.linda.rpc.webui.utils.PackUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +56,9 @@ public class AppController extends BasicController{
             model.put("consumeServices",consumeServices);
         }
         this.setApps(model);
-        return "app_detail";
+//        return "app_detail";
+        PackUtils.packModel(model);
+        return "json";
     }
 
 }
