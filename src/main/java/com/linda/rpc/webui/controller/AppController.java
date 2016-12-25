@@ -31,6 +31,27 @@ public class AppController extends BasicController{
     @Resource
     private HostService hostService;
 
+    /**
+     * app列表
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/app/list",method = RequestMethod.GET)
+    public String appList(ModelMap model){
+        List<AppInfo> appList = appService.getAppList();
+        model.put("total",appList.size());
+        model.put("appList",appList);
+        return "app_list";
+//        PackUtils.packModel(model);
+//        return "json";
+    }
+
+    /**
+     * app基本信息,提供服务情况,依赖服务情况
+     * @param appId
+     * @param model
+     * @return
+     */
     @RequestMapping(value="/app/info",method = RequestMethod.GET)
     public String appInfo(@RequestParam("appId") long appId, ModelMap model){
 
@@ -41,24 +62,53 @@ public class AppController extends BasicController{
             List<HostInfo> providers = hostService.getProviderListByAppId(appId);
             //提供者列表
             model.put("providers",providers);
-
-            //消费者列表????不是机器哪个应用消费了哪个服务???
-            List<HostInfo> consumers = hostService.getConsumerListByAppId(appId);
-            hostService.setApps(consumers);
-            model.put("consumers",consumers);
+            model.put("providerCount",providers.size());
 
             //提供服务列表
             List<ServiceInfo> services = serviceInfoService.getListByAppId(appId);
             model.put("provideServices",services);
+            model.put("provideServiceCount",services.size());
 
             //依赖消费服务列表
-            List<ServiceInfo> consumeServices = serviceInfoService.getConsumeServicesByAppId(appId);
-            model.put("consumeServices",consumeServices);
+            List<ServiceInfo> dependServices = serviceInfoService.getConsumeServicesByAppId(appId);
+            serviceInfoService.setApp(dependServices);
+            model.put("dependServices",dependServices);
+            model.put("dependServiceCount",dependServices.size());
         }
         this.setApps(model);
-//        return "app_detail";
-        PackUtils.packModel(model);
-        return "json";
+        return "app_detail";
+//        PackUtils.packModel(model);
+//        return "json";
+    }
+
+    /**
+     * 消费服务情况
+     * @param appId
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/app/consumers",method = RequestMethod.GET)
+    public String consumerInfo(@RequestParam("appId") long appId, ModelMap model){
+        AppInfo app = appService.getById(appId);
+        if(app!=null){
+            model.put("app",app);
+
+            //消费者机器列表
+            List<HostInfo> consumerHosts = hostService.getConsumerListByAppId(appId);
+            hostService.setApps(consumerHosts);
+            model.put("consumerHosts",consumerHosts);
+            model.put("consumerHostCount",consumerHosts.size());
+
+            //消费app消费服务列表,按照app分类
+            List<ServiceInfo> services = serviceInfoService.getConsumeServicesByAppId(appId);
+            serviceInfoService.setApp(services);
+            model.put("consumerServices",services);
+            model.put("onsumerServiceCount",services.size());
+        }
+        this.setApps(model);
+        return "app_consumers";
+//        PackUtils.packModel(model);
+//        return "json";
     }
 
 }

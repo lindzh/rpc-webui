@@ -6,6 +6,9 @@ import com.linda.common.mybatis.generator.annotation.PrimaryKey;
 import com.linda.common.mybatis.generator.annotation.Table;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by lin on 2016/12/15.
  */
@@ -43,5 +46,11 @@ public class AppInfo {
      */
     @Column(column = "app_owner_email")
     private String email;
+
+    //作为dto使用
+    private List<HostInfo> hosts = new ArrayList<HostInfo>();
+    //作为DTO使用
+    private List<ServiceInfo> services = new ArrayList<ServiceInfo>();
+
 
 }

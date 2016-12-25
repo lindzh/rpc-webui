@@ -11,6 +11,8 @@ import com.linda.rpc.webui.utils.Const;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -191,6 +193,22 @@ public class HostService {
             }
         }
         return hosts;
+    }
+
+    public List<AppInfo> groupByApps(List<HostInfo> hosts){
+        HashMap<Long, AppInfo> result = new HashMap<Long, AppInfo>();
+        List<AppInfo> appList = appService.getAppList();
+        Map<Long, AppInfo> appInfoMap = CollectionUtils.toMap(appList, "id", Long.class);
+        for(HostInfo host:hosts){
+            AppInfo app = appInfoMap.get(host.getAppId());
+            AppInfo info = result.get(app.getId());
+            if(info==null){
+                result.put(app.getId(),app);
+                info=app;
+            }
+            info.getHosts().add(host);
+        }
+        return new ArrayList<AppInfo>(result.values());
     }
 
     public HostInfo getById(long id,boolean app){

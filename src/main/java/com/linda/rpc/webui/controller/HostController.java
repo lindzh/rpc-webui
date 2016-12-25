@@ -49,12 +49,16 @@ public class HostController extends BasicController {
             hostService.setApps(hosts);
             model.put("hosts",hosts);
         }
+
+        this.setApp(appId,model);
         model.put("appId",appId);
         model.put("total",total);
+        model.put("limit",limit);
+        model.put("offset",offset);
         this.setApps(model);
-//        return "host_list";
-        PackUtils.packModel(model);
-        return "json";
+        return "host_list";
+//        PackUtils.packModel(model);
+//        return "json";
     }
 
     @RequestMapping(value="/host/detail",method = RequestMethod.GET)
@@ -62,15 +66,20 @@ public class HostController extends BasicController {
         HostInfo info = hostService.getById(hostId,true);
         if(info!=null){
             List<ServiceInfo> providerServices = serviceInfoService.getProvideServicesByHostId(hostId);
+
             List<ServiceInfo> consumeServices = serviceInfoService.getConsumeServicesByHostId(hostId);
+            serviceInfoService.setApp(consumeServices);
             model.put("host",info);
-            model.put("providerServices",providerServices);
+            model.put("provideServices",providerServices);
+            model.put("provideServiceCount",providerServices.size());
+
             model.put("consumeServices",consumeServices);
+            model.put("consumeServiceCount",consumeServices.size());
         }
         this.setApps(model);
-//        return "host_detail";
-        PackUtils.packModel(model);
-        return "json";
+        return "host_detail";
+//        PackUtils.packModel(model);
+//        return "json";
     }
 
 }

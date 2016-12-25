@@ -9,6 +9,7 @@ import com.linda.rpc.webui.pojo.ServiceInfo;
 import com.linda.rpc.webui.utils.PackUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,10 +47,11 @@ public class ServiceController extends BasicController{
                               @RequestParam(value="appId",defaultValue = "0",required = false) long appId,
                               @RequestParam(value="limit",defaultValue = "50",required = false) int limit,
                               @RequestParam(value="offset",defaultValue = "0",required = false) int offset, ModelMap model){
-
+        keyword = StringUtils.trimAllWhitespace(keyword);
         long total = serviceInfoService.getCountByKeywordAndAppId(keyword,  appId);
         if(total>0){
             List<ServiceInfo> services = serviceInfoService.getListByKeywordAndAppId(keyword, appId, limit, offset);
+
             model.put("services",services);
         }else{
             model.put("services",new ArrayList<ServiceInfo>());
@@ -57,14 +59,17 @@ public class ServiceController extends BasicController{
 
         this.setApps(model);
 
+
+        this.setApp(appId,model);
+
         model.put("total",total);
         model.put("keyword",keyword);
         model.put("appId",appId);
         model.put("limit",limit);
         model.put("offset",offset);
-//        return "service_list";
-        PackUtils.packModel(model);
-        return "json";
+        return "service_list";
+//        PackUtils.packModel(model);
+//        return "json";
     }
 
     /**
@@ -79,14 +84,18 @@ public class ServiceController extends BasicController{
         if(info!=null){
             model.put("info",info);
             List<HostInfo> providers = hostService.getProviderListByServiceId(serviceId);
+            model.put("providerCount",providers.size());
             model.put("providers",providers);
             List<HostInfo> consumers = hostService.getConsumerListByServiceId(serviceId);
+            hostService.setApps(consumers);
+            //todo
+            model.put("consumerCount",consumers.size());
             model.put("consumers",consumers);
         }
         this.setApps(model);
-//        return "service_detail";
-        PackUtils.packModel(model);
-        return "json";
+        return "service_detail";
+//        PackUtils.packModel(model);
+//        return "json";
     }
 
 

@@ -96,7 +96,7 @@ public class ServiceInfoService {
         return info;
     }
 
-    private List<ServiceInfo> setApp(List<ServiceInfo> services){
+    public List<ServiceInfo> setApp(List<ServiceInfo> services){
         if(services!=null&&services.size()>0){
             List<AppInfo> apps = appService.getAppList();
             Map<Long, AppInfo> appMap = CollectionUtils.toMap(apps, "id", Long.class);
@@ -118,6 +118,10 @@ public class ServiceInfoService {
 
     public List<ServiceInfo> getConsumeServicesByHostId(long hostid){
         return serviceInfoDao.getConsumeServicesByHostId(hostid);
+    }
+
+    public List<ServiceInfo> getListByProviderAndConsumerApp(long providerAppId,long consumeAppId){
+        return serviceInfoDao.getListByProviderAndConsumerApp(providerAppId, consumeAppId);
     }
 
 }

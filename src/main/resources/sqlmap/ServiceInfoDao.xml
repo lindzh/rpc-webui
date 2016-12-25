@@ -117,4 +117,8 @@
 		select * from service_info where id in(select distinct(service_id) from service_consumer_info where consumer_host_id=#{hostId})
 	</select>
 
+	<select id="getListByProviderAndConsumerApp" resultMap="ServiceInfoResultMap">
+		select * from service_info
+		where id in(select distinct(service_id) from service_consumer_info where service_app_id=#{providerAppId} and consumer_app_id=#{consumerAppId})
+	</select>
 </mapper>

@@ -56,7 +56,7 @@
 								<td>${host.port}</td>
 								<td>${parseDate(host.time)}</td>
 								<td>${host.token}</td>
-								<td>online</td>
+								<td><#if (host.status>0)><span class="label label-success">up</span><#else><span class="label label-warning">down</span></#if></td>
 							</tr>
 						</#list>
 						</tbody>

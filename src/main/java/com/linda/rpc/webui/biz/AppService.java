@@ -2,6 +2,7 @@ package com.linda.rpc.webui.biz;
 
 import com.linda.rpc.webui.dao.AppInfoDao;
 import com.linda.rpc.webui.pojo.AppInfo;
+import com.linda.rpc.webui.pojo.ServiceInfo;
 import com.linda.rpc.webui.utils.ConUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class AppService {
 
     @Resource
     private AppInfoDao appInfoDao;
+
+    @Resource
+    private ServiceInfoService serviceInfoService;
 
     public AppInfo getById(long id){
         return appInfoDao.getById(id);
@@ -37,6 +41,18 @@ public class AppService {
 
     public List<AppInfo> getAppList(){
         return appInfoDao.getList();
+    }
+
+    public List<AppInfo> getConsumerApps(long appId){
+        List<AppInfo> consumerApps = appInfoDao.getConsumerApps(appId);
+        //填充服务
+        if(consumerApps!=null){
+            for(AppInfo info:consumerApps){
+                List<ServiceInfo> services = serviceInfoService.getListByProviderAndConsumerApp(appId, info.getId());
+                info.setServices(services);
+            }
+        }
+        return consumerApps;
     }
 
 }

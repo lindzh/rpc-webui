@@ -26,5 +26,7 @@ public interface AppInfoDao {
 	public long getCountByAppName(@Param("name")String name);
 
 	public List<AppInfo> getList();
+
+	public List<AppInfo> getConsumerApps(@Param("appId")long appId);
 	
 }

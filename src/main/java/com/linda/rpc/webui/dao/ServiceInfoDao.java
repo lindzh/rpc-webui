@@ -44,5 +44,6 @@ public interface ServiceInfoDao {
 
 	public List<ServiceInfo> getConsumeServicesByHostId(@Param("hostId")long hostid);
 
+	public List<ServiceInfo> getListByProviderAndConsumerApp(@Param("providerAppId")long providerAppId,@Param("consumerAppId")long consumeAppId);
 
 }

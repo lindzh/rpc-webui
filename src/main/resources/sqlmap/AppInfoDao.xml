@@ -21,7 +21,8 @@
 	</select>
 	
 	<update id="updateById" parameterType="com.linda.rpc.webui.pojo.AppInfo">
-		update app_info set app_name=#{obj.name},app_desc=#{obj.desc},app_owner=#{obj.owner},app_owner_email=#{obj.email}
+		update app_info set app_name=#{obj.name},app_desc=#{obj.desc},app_owner=#{obj.owner},
+		app_owner_email=#{obj.email}
 		where id=#{obj.id}
 	</update>
 	
@@ -48,6 +49,11 @@
 
 	<select id="getList" resultMap="AppInfoResultMap">
 		select * from app_info where 1=1
+	</select>
+
+	<select id="getConsumerApps" resultMap="AppInfoResultMap">
+		select * from app_info
+		where id in(select distinct(consumer_app_id) from service_consumer_info where service_app_id=#{appId})
 	</select>
 	
 	
