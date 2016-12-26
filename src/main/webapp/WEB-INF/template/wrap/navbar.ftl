@@ -24,7 +24,7 @@
 		        	<a href="/host/list">机器</a>
 		        </li>
 		        <li <#if page=='weight'>class="active"</#if>>
-		        	<a href="/host/list">权重</a>
+		        	<a href="/weight/list">权重</a>
 		        </li>
 		       	<li <#if page=='limit'>class="active"</#if>>
 		        	<a href="/host/list">限流</a>

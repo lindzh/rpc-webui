@@ -26,12 +26,34 @@ public class WeightController {
     private HostService hostService;
 
     /**
+     * 权重页面
+     * @param appId
+     * @param limit
+     * @param offset
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/weight/list",method = RequestMethod.GET)
+    public String weightList(@RequestParam(value="appId",required = false,defaultValue = "0") long appId,
+                             @RequestParam(value="limit",required = false,defaultValue = "50") int limit,
+                             @RequestParam(value="offset",required = false,defaultValue = "0") int offset,ModelMap model){
+        List<HostInfo> hosts = hostService.getListByAppIdWithPage(appId, limit, offset);
+        hostService.setApps(hosts);
+        model.put("hosts",hosts);
+        model.put("limit",limit);
+        model.put("offset",offset);
+        model.put("appId",appId);
+        model.put("total",hostService.getCountByAppId(appId));
+        return "host_list";
+    }
+
+    /**
      * 权重编辑页面
      * @param appId
      * @param model
      * @return
      */
-    @RequestMapping(value="weight/{appId}",method = RequestMethod.GET)
+    @RequestMapping(value="weight/edit/{appId}",method = RequestMethod.GET)
     public String editWeightPage(@PathVariable("appId") long appId, ModelMap model){
         AppInfo app = appService.getById(appId);
         if(app!=null){
@@ -51,7 +73,7 @@ public class WeightController {
      * @param model
      * @return
      */
-    @RequestMapping(value="weight/{appId}",method = RequestMethod.POST)
+    @RequestMapping(value="weight/edit/{appId}",method = RequestMethod.POST)
     public String weightEditSubmmit(@PathVariable("appId") long appId, @RequestBody String body, ModelMap model){
         List<HostInfo> hosts = JSONUtils.fromJSON(body, new TypeReference<List<HostInfo>>() {});
         for(HostInfo info:hosts){
@@ -68,7 +90,7 @@ public class WeightController {
             hostInfo.setWantWeight(info.getWantWeight());
             hostService.updateHost(hostInfo);
         }
-        return "redirect:/host/list?appId="+appId;
+        return "redirect:/weight/list?appId="+appId;
     }
 
 }

@@ -39,7 +39,7 @@
 
 			<div class="panel panel-primary">
 		    	<div class="panel-heading">
-					应用提供者机器列表
+					应用提供者机器列表 &nbsp;&nbsp;&nbsp;<a href="/weight/edit/${app.id}">权重编辑</a>
 		    	</div>
 		    		<#if (providerCount>0)>
 			    	<table class="table">
