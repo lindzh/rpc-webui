@@ -34,9 +34,9 @@
 						<#list appList as app>
 						<tr>
 							<td><a href="/app/info?appId=${app.id}">${app.name}</a></td>
-							<td><#if app.owner??>${app.owner}</#if></td>
-							<td><#if app.email??>${app.email}</#if></td>
-							<td><a href="/app/consumers?appId=${app.id}">查看消费情况</a></td>
+							<td><#if app.owner??>${app.owner}<#else><a href="/app/edit?appId=${app.id}">填写</a></#if></td>
+							<td><#if app.email??>${app.email}<#else><a href="/app/edit?appId=${app.id}">填写</a></#if></td>
+							<td><a href="/app/consumers?appId=${app.id}">查看消费情况</a>&nbsp;&nbsp;&nbsp;<a href="/app/edit?appId=${app.id}">编辑</a></td>
 						</tr>
 						</#list>
 						</#if>
