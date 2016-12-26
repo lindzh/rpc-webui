@@ -219,4 +219,8 @@ public class HostService {
         return info;
     }
 
+    public void updateHost(HostInfo host){
+        hostInfoDao.updateById(host);
+    }
+
 }
