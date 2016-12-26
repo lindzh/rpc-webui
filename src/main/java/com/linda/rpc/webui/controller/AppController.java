@@ -111,4 +111,38 @@ public class AppController extends BasicController{
 //        return "json";
     }
 
+    /**
+     * 编辑app页面
+     * @param appId
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/app/edit",method = RequestMethod.GET)
+    public String editAppPage(@RequestParam("appId") long appId,ModelMap model){
+        AppInfo app = appService.getById(appId);
+        model.put("app",app);
+        return "app_edit";
+    }
+
+    /**
+     * 编辑app提交页面
+     * @param appId
+     * @param owner
+     * @param email
+     * @param desc
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/app/editsubmit",method = RequestMethod.POST)
+    public String submitApp(@RequestParam("appId") long appId,String owner,String email,String desc,ModelMap model){
+        AppInfo app = appService.getById(appId);
+        if(app!=null){
+            app.setEmail(email);
+            app.setDesc(desc);
+            app.setOwner(owner);
+            appService.updateApp(app);
+        }
+        return "redirect:/app/list";
+    }
+
 }

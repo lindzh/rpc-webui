@@ -25,6 +25,10 @@ public class AppService {
         return appInfoDao.getById(id);
     }
 
+    public void updateApp(AppInfo app){
+        appInfoDao.updateById(app);
+    }
+
     public AppInfo getOrAddApp(String app){
         AppInfo info = appInfoDao.getByName(app);
         if(info!=null){
