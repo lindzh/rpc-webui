@@ -31,6 +31,9 @@
 		        </li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
+		      	<li>
+		      	<a class="navbar-brand" href="https://github.com/lindzh/rpc" target="_blank"><img src="/images/github.jpg" width="22" height="22" /></a>
+		      	</li>
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 		          lindezhi<span class="caret"></span>
