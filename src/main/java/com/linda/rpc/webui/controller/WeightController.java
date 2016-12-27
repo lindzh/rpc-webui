@@ -17,7 +17,7 @@ import java.util.List;
  * Created by lin on 2016/12/26.
  */
 @Controller
-public class WeightController {
+public class WeightController extends BasicController{
 
     @Resource
     private AppService appService;
@@ -44,7 +44,9 @@ public class WeightController {
         model.put("offset",offset);
         model.put("appId",appId);
         model.put("total",hostService.getCountByAppId(appId));
-        return "host_list";
+        this.setApps(model);
+        this.setApp(appId,model);
+        return "weight_list";
     }
 
     /**
@@ -69,13 +71,13 @@ public class WeightController {
     /**
      * 权重修改提交
      * @param appId
-     * @param body
+     * @param data
      * @param model
      * @return
      */
     @RequestMapping(value="weight/edit/{appId}",method = RequestMethod.POST)
-    public String weightEditSubmmit(@PathVariable("appId") long appId, @RequestBody String body, ModelMap model){
-        List<HostInfo> hosts = JSONUtils.fromJSON(body, new TypeReference<List<HostInfo>>() {});
+    public String weightEditSubmmit(@PathVariable("appId") long appId, @RequestParam("data") String data, ModelMap model){
+        List<HostInfo> hosts = JSONUtils.fromJSON(data, new TypeReference<List<HostInfo>>() {});
         for(HostInfo info:hosts){
             HostInfo hostInfo = hostService.getById(info.getId(), false);
             if(hostInfo==null){
