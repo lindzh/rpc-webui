@@ -47,6 +47,24 @@ public class AppInfo {
     @Column(column = "app_owner_email")
     private String email;
 
+    /**
+     * 限流同步状态
+     */
+    @Column(column = "limit_sync_status")
+    private int limitSyncStatus;
+
+    /**
+     * 限流数量
+     */
+    @Column(column = "limit_count")
+    private int limitCount;
+
+    /**
+     * 限流同步时间
+     */
+    @Column(column = "limit_sync_time")
+    private long limitSyncTime;
+
     //作为dto使用
     private List<HostInfo> hosts = new ArrayList<HostInfo>();
     //作为DTO使用

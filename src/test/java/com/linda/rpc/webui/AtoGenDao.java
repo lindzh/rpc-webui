@@ -12,7 +12,7 @@ public class AtoGenDao {
     public static void main(String[] args) {
         DefaultMybatisGenerator generator = new DefaultMybatisGenerator();
         generator.startService();
-        MybatisPojo code = generator.genCode(ServiceProviderInfo.class, "com.linda.rpc.webui.dao", "/Users/lin/Work/java/rpc-webui/src/main/resources/sqlmap/", "/Users/lin/Work/java/rpc-webui/src/main/java/com/linda/rpc/webui/dao/");
+        MybatisPojo code = generator.genCode(LimitInfo.class, "com.linda.rpc.webui.dao", "D:\\Work\\java\\rpc-webui\\src\\main\\resources\\sqlmap\\", "D:\\Work\\java\\rpc-webui\\src\\main\\java\\com\\linda\\rpc\\webui\\dao\\");
         System.out.println("===========gen finished==================");
     }
 }

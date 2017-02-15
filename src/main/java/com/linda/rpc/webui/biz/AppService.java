@@ -59,4 +59,13 @@ public class AppService {
         return consumerApps;
     }
 
+    /**
+     * 获取限流列表
+     * @param syncStatus
+     * @return
+     */
+    public List<AppInfo> getListByLimitSyncStatus(int syncStatus){
+        return appInfoDao.getListByLimitSyncStatus(syncStatus);
+    }
+
 }

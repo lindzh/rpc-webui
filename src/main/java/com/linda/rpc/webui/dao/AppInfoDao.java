@@ -28,5 +28,7 @@ public interface AppInfoDao {
 	public List<AppInfo> getList();
 
 	public List<AppInfo> getConsumerApps(@Param("appId")long appId);
+
+	public List<AppInfo> getListByLimitSyncStatus(@Param("limit_sync_status")int syncStatus);
 	
 }
