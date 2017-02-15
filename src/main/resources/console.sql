@@ -50,3 +50,20 @@ create table service_provider_info (
     provider_host_uptime bigint default 0,
     unique key service_app_host(service_id,app_id,host_id)
 ) comment 'service provider';
+
+alter table app_info add column limit_sync_status tinyint default 0;
+alter table app_info add column limit_count int default 0;
+alter table app_info add column limit_sync_time tinyint default 0;
+
+create table limit_info (
+    id bigint primary key auto_increment,
+    app_id bigint not null,
+    limit_type tinyint not null,
+    limit_application_id bigint default 0,
+    limit_service varchar(100) default null,
+    limit_service_method varchar(100) default null,
+    limit_ttl int default 10000,
+    limit_count int default 10,
+    update_time bigint default 0,
+    key appIdx(app_id)
+) comment 'limit info';
