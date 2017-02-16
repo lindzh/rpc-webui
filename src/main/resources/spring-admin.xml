@@ -51,7 +51,7 @@
                 <ref bean="syncConsumersTrigger"/>
                 <ref bean="updateServiceCountAndStatusTrigger"/>
                 <ref bean="weightTaskTrigger"/>
-                <ref bean="limitTaskJobDetail"/>
+                <ref bean="limitTaskTrigger"/>
             </list>
         </property>
     </bean>

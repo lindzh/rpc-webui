@@ -48,3 +48,15 @@
 .rightSpan{
 	float:right;
 }
+
+.limit-service{
+    width:200;
+}
+
+.limit-method{
+    width:50;
+}
+
+.limit-num{
+    width:20;
+}

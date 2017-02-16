@@ -27,7 +27,7 @@
 		        	<a href="/weight/list">权重</a>
 		        </li>
 		       	<li <#if page=='limit'>class="active"</#if>>
-		        	<a href="/host/list">限流</a>
+		        	<a href="/limit/list">限流</a>
 		        </li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">

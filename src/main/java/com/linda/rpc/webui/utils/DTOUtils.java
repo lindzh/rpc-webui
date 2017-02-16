@@ -37,7 +37,9 @@ public class DTOUtils {
                 define.setTtl(info.getTtl());
                 define.setCount(info.getCount());
                 define.setType(info.getType());
-                define.setApplication(info.getLimitAppInfo().getName());
+                if(info.getLimitAppInfo()!=null){
+                    define.setApplication(info.getLimitAppInfo().getName());
+                }
                 define.setMethod(info.getMethod());
                 define.setService(info.getService());
                 limitDefines.add(define);

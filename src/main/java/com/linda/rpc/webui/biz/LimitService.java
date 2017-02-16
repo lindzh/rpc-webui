@@ -27,6 +27,10 @@ public class LimitService {
         return setLimitAppInfos(list,app);
     }
 
+    public LimitInfo getById(long id){
+        return limitInfoDao.getById(id);
+    }
+
     private List<LimitInfo> setLimitAppInfos(List<LimitInfo> list,boolean app){
         if(app){
             for (LimitInfo info : list) {
@@ -35,6 +39,23 @@ public class LimitService {
             }
         }
         return list;
+    }
+
+    /**
+     * 单个更新
+     * @param limitInfo
+     */
+    public void addOrUpdateLimit(LimitInfo limitInfo){
+        long now = System.currentTimeMillis();
+        limitInfo.setUpdateTime(now);
+        if(limitInfo.getId()>0){
+            limitInfoDao.updateById(limitInfo);
+        }else{
+            limitInfoDao.addLimitInfo(limitInfo);
+        }
+        AppInfo app = appService.getById(limitInfo.getAppId());
+        app.setLimitSyncStatus(Const.APP_LIMIT_SYNCED_NO);
+        appService.updateApp(app);
     }
 
     /**
@@ -52,6 +73,14 @@ public class LimitService {
         limitInfoDao.deleteByAppId(app.getId());
         limitInfoDao.batchAdd(list);
         app.setLimitCount(list.size());
+        app.setLimitSyncStatus(Const.APP_LIMIT_SYNCED_NO);
+        appService.updateApp(app);
+    }
+
+    public void deleteLimit(LimitInfo limitInfo,long appId){
+        limitInfoDao.deleteById(limitInfo.getId());
+        AppInfo app = appService.getById(limitInfo.getAppId());
+        app.setLimitCount(app.getLimitCount()-1);
         app.setLimitSyncStatus(Const.APP_LIMIT_SYNCED_NO);
         appService.updateApp(app);
     }

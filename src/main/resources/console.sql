@@ -53,7 +53,7 @@ create table service_provider_info (
 
 alter table app_info add column limit_sync_status tinyint default 0;
 alter table app_info add column limit_count int default 0;
-alter table app_info add column limit_sync_time tinyint default 0;
+alter table app_info add column limit_sync_time bigint default 0;
 
 create table limit_info (
     id bigint primary key auto_increment,

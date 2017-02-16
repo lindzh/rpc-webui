@@ -16,7 +16,7 @@
 	
 	<insert id="addAppInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.linda.rpc.webui.pojo.AppInfo">
 		insert into app_info(app_name,app_desc,app_owner,app_owner_email,limit_sync_status,limit_count,limit_sync_time)
-		 values(#{name},#{desc},#{owner},#{email},#{limitSyncStatus}.#{limitCount},#{limitSyncTime})
+		 values (#{name},#{desc},#{owner},#{email},#{limitSyncStatus},#{limitCount},#{limitSyncTime})
 	</insert>
 	
 	<select id="getById" resultMap="AppInfoResultMap">
@@ -25,7 +25,7 @@
 	
 	<update id="updateById" parameterType="com.linda.rpc.webui.pojo.AppInfo">
 		update app_info set app_name=#{obj.name},app_desc=#{obj.desc},app_owner=#{obj.owner},
-		app_owner_email=#{obj.email},limit_sync_status=#{limitSyncStatus},limit_count=#{limitCount},limit_sync_time=#{limitSyncTime}
+		app_owner_email=#{obj.email},limit_sync_status=#{obj.limitSyncStatus},limit_count=#{obj.limitCount},limit_sync_time=#{obj.limitSyncTime}
 		where id=#{obj.id}
 	</update>
 	
