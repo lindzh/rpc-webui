@@ -6,10 +6,14 @@ import com.linda.framework.rpc.cluster.HostWeight;
 import com.linda.framework.rpc.cluster.JSONUtils;
 import com.linda.framework.rpc.cluster.RpcHostAndPort;
 import com.linda.framework.rpc.cluster.admin.RpcAdminService;
+import com.linda.framework.rpc.cluster.limit.LimitDefine;
 import com.linda.rpc.webui.biz.*;
 import com.linda.rpc.webui.pojo.AppInfo;
 import com.linda.rpc.webui.pojo.HostInfo;
+import com.linda.rpc.webui.pojo.LimitInfo;
 import com.linda.rpc.webui.pojo.ServiceInfo;
+import com.linda.rpc.webui.utils.Const;
+import com.linda.rpc.webui.utils.DTOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +43,9 @@ public class ManagerService {
 
     @Resource
     private ProviderService providerService;
+
+    @Resource
+    private LimitService limitService;
 
     private Logger logger = Logger.getLogger("MANAGER");
 
@@ -194,6 +201,8 @@ public class ManagerService {
         for(AppInfo app:list){
             this.doFetchHostWeights(app);
         }
+
+
     }
 
     /**
@@ -208,6 +217,27 @@ public class ManagerService {
             weight.setPort(host.getPort());
             weight.setWeight((int)host.getWantWeight());
             adminService.setWeight(info.getName(),weight);
+        }
+    }
+
+    /**
+     * 限流信息同步
+      */
+    public void syncLimits(){
+        List<AppInfo> needSyncApps = appService.getListByLimitSyncStatus(Const.APP_LIMIT_SYNCED_NO);
+        for(AppInfo app:needSyncApps){
+            try {
+                List<LimitInfo> limits = limitService.getListByAppId(app.getId(), 1000, 0, true);
+                List<LimitDefine> limitDefines = DTOUtils.parse(limits);
+                adminService.setLimits(app.getName(), limitDefines);
+
+                app.setLimitSyncStatus(Const.APP_LIMIT_SYNCED);
+                app.setLimitCount(limits.size());
+                app.setLimitSyncTime(System.currentTimeMillis());
+                appService.updateApp(app);
+            }catch (Exception e){
+                logger.error("[LIMIT] sync app limit failed app:"+app.getName(),e);
+            }
         }
     }
 }

@@ -56,7 +56,7 @@ public class LimitController {
     public String limitDetail( @RequestParam(value="appId")long appId,ModelMap model){
         AppInfo app = appService.getById(appId);
         List<AppInfo> allApps = appService.getAppList();
-        List<LimitInfo> limits = limitService.getListByAppId(appId, 1000, 0);
+        List<LimitInfo> limits = limitService.getListByAppId(appId, 1000, 0,false);
         model.put("app",app);
         model.put("limits",limits);
         model.put("apps",allApps);

@@ -66,4 +66,9 @@ public class LimitInfo {
     @Column(column = "update_time")
     private long updateTime;
 
+    /**
+     * 访问应用app
+     */
+    private AppInfo limitAppInfo;
+
 }
